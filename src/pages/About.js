@@ -32,18 +32,21 @@ const About = () => {
                 Our Story
               </Typography>
               <Typography variant="body1" paragraph>
-                Founded in 2005, SNA Granites has grown to become one of the leading granite suppliers in South India. 
-                What started as a small family business has evolved into a trusted name in the industry, serving 
-                thousands of customers with premium quality granite products.
+                For over 60 years, SB Stones has been a proud, family-owned business in the Jet Black Granite industry. Our Chamrajnagar quarry, located in the heart of South India, is the source of some of the finest, most sought-after Jet Black Granite available globally. With a state-of-the-art manufacturing facility specializing in memorials and monuments, we are fully vertically integrated, managing every stage of production—from quarry extraction to global delivery.
               </Typography>
               <Typography variant="body1" paragraph>
-                Our journey began with a passion for natural stone and a commitment to quality craftsmanship. 
-                Over the years, we've built strong relationships with quarries around the world, ensuring access 
-                to the finest granite varieties.
+                As a third-generation, family-owned business, we are committed to maintaining the legacy of excellence passed down through the years. Our long-standing reputation, paired with our modern manufacturing machinery and techniques, ensures that we continue to meet and exceed our clients’ expectations worldwide.
               </Typography>
               <Typography variant="body1" paragraph>
-                Today, our state-of-the-art facility houses cutting-edge machinery and a team of skilled artisans 
-                who transform raw granite into stunning countertops, flooring, and architectural elements.
+                Located in the heart of Chamrajnagar, our quarry is renowned for its rich, deep, and consistent color of Jet Black Granite. This mineral-rich region has supplied the world with premium granite for decades, and our quarry stands at the forefront of that legacy. Our quarry produces granite known for its density, flawless texture, and vibrant black hue. We are committed to providing a steady supply of high‑quality granite for a variety of applications.
+              </Typography>
+              <Typography variant="body1" component="ul" sx={{ pl: 2, mb: 0 }}>
+                <li>
+                  <strong>For Custom Memorials &amp; Headstones:</strong> Our quarry’s granite is ideal for producing stunning and durable memorials, headstones, and commemorative items.
+                </li>
+                <li>
+                  <strong>For Paving &amp; Flooring:</strong> We also provide smaller blocks and tiles, offering unmatched durability and elegance for outdoor and indoor paving projects.
+                </li>
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>

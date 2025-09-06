@@ -15,6 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #1f2937;
+  overflow-x: hidden; /* prevent horizontal scroll on mobile */
 }
 
 /* Paragraphs and default text */
@@ -48,6 +49,12 @@ h1, h2, h3, h4, h5, h6,
   margin-right: auto;
   padding-left: 16px;
   padding-right: 16px;
+}
+
+/* Make images responsive by default */
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 code {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Container, Grid, Typography, Button, Card, CardContent, CardMedia } from '@mui/material';
+import { Box, Container, Grid, Typography, Button, Card, CardContent, CardMedia, Dialog, DialogContent, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import useScrollAnimation from '../components/hooks/useScrollAnimation';
 import HeroSlider from '../components/HeroSlider';
@@ -20,6 +20,9 @@ import {
   DoorFrontOutlined,
   Star,
   ZoomIn,
+  Close,
+  ChevronLeft,
+  ChevronRight,
 } from '@mui/icons-material';
 
 const Home = () => {
@@ -35,24 +38,62 @@ const Home = () => {
       id: 1,
       title: 'Monuments',
       description: 'Headstones, markers, and custom memorials',
-      image: '/placeholder.jpg',
+      image: '/images/premium-1.jpg',
     },
     {
       id: 2,
       title: 'Slabs',
       description: 'Polished slabs for fabrication and projects',
-      image: '/placeholder.jpg',
+      image: '/images/premium-2.png',
     },
     {
       id: 3,
       title: 'Rough Blocks',
       description: 'Premium quarry blocks for processing',
-      image: '/placeholder.jpg',
+      image: '/images/premium-3.png',
     },
   ];
 
   const [imageErrors, setImageErrors] = useState({});
   const animatedElements = useScrollAnimation(0.1);
+
+  // Lightbox state for designs
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxSrc, setLightboxSrc] = useState(null);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const totalDesigns = 15;
+  const getSrcByIndex = (idx) => `/images/products/${idx + 1}.png`;
+  const getModelByIndex = (idx) => `AG-11${String(idx + 1).padStart(2, '0')}`;
+  const openLightbox = (idx) => {
+    setLightboxIndex(idx);
+    setLightboxSrc(getSrcByIndex(idx));
+    setLightboxOpen(true);
+  };
+  const closeLightbox = () => setLightboxOpen(false);
+  const showPrev = () => {
+    const nextIdx = (lightboxIndex - 1 + totalDesigns) % totalDesigns;
+    setLightboxIndex(nextIdx);
+    setLightboxSrc(getSrcByIndex(nextIdx));
+  };
+  const showNext = () => {
+    const nextIdx = (lightboxIndex + 1) % totalDesigns;
+    setLightboxIndex(nextIdx);
+    setLightboxSrc(getSrcByIndex(nextIdx));
+  };
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const onKey = (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        showPrev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        showNext();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightboxOpen, lightboxIndex]);
 
   // About section simple slider images
   const aboutSlides = ['/images/about-1.png', '/images/about-3.png', '/images/about-4.png'];
@@ -86,6 +127,66 @@ const Home = () => {
     el.scrollBy({ left: dir * (cardWidth + gapPx) * testimonialItemsPerView, behavior: 'smooth' });
   };
 
+  // Popular Designs slider (below Order Process Flow)
+  const designsSliderRef = useRef(null);
+  const [designsItemsPerView, setDesignsItemsPerView] = useState(5);
+  const [designsPage, setDesignsPage] = useState(0);
+  const designsPagesCount = Math.ceil(totalDesigns / designsItemsPerView);
+  const [autoPlayDesigns, setAutoPlayDesigns] = useState(true);
+  const designsGapPx = 24; // keep in sync with sx gap=3
+  useEffect(() => {
+    const setByWidth = () => {
+      const w = window.innerWidth;
+      if (w < 600) return setDesignsItemsPerView(2);
+      if (w < 900) return setDesignsItemsPerView(3);
+      if (w < 1200) return setDesignsItemsPerView(4);
+      return setDesignsItemsPerView(5);
+    };
+    setByWidth();
+    window.addEventListener('resize', setByWidth);
+    return () => window.removeEventListener('resize', setByWidth);
+  }, []);
+  const slidePopularDesigns = (dir = 1) => {
+    const el = designsSliderRef.current;
+    if (!el) return;
+    const card = el.querySelector('.popular-design-card');
+    const cardWidth = card ? card.getBoundingClientRect().width : el.clientWidth / designsItemsPerView;
+    el.scrollBy({ left: dir * (cardWidth + designsGapPx) * designsItemsPerView, behavior: 'smooth' });
+  };
+  const slidePopularDesignsOne = (dir = 1) => {
+    const el = designsSliderRef.current;
+    if (!el) return;
+    const card = el.querySelector('.popular-design-card');
+    const cardWidth = card ? card.getBoundingClientRect().width : el.clientWidth / designsItemsPerView;
+    const distance = dir * (cardWidth + designsGapPx);
+    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2; // near end
+    if (dir > 0 && atEnd) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+      return;
+    }
+    const atStart = el.scrollLeft <= 2;
+    if (dir < 0 && atStart) {
+      el.scrollTo({ left: el.scrollWidth, behavior: 'smooth' });
+      return;
+    }
+    el.scrollBy({ left: distance, behavior: 'smooth' });
+  };
+  const updateDesignsPageFromScroll = () => {
+    const el = designsSliderRef.current;
+    if (!el) return;
+    const card = el.querySelector('.popular-design-card');
+    const cardWidth = card ? card.getBoundingClientRect().width : el.clientWidth / designsItemsPerView;
+    const pageWidth = (cardWidth + designsGapPx) * designsItemsPerView;
+    const page = Math.round(el.scrollLeft / Math.max(pageWidth, 1));
+    const clamped = Math.min(Math.max(page, 0), designsPagesCount - 1);
+    setDesignsPage(clamped);
+  };
+  useEffect(() => {
+    if (!autoPlayDesigns) return;
+    const id = setInterval(() => slidePopularDesignsOne(1), 2000); // faster auto-slide, one card at a time
+    return () => clearInterval(id);
+  }, [autoPlayDesigns, designsItemsPerView]);
+
   const handleImageError = (imageId) => {
     setImageErrors(prev => ({ ...prev, [imageId]: true }));
   };
@@ -101,16 +202,17 @@ const Home = () => {
         className={`animation-trigger ${animatedElements['about-section'] ? 'fade-in-up' : ''}`}
         sx={{ py: 8, backgroundColor: '#ffffff' }}
       >
-        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: '100px', width: '100%', px: { xs: 2, md: 0 } }}>
-          <Grid container spacing={6} alignItems="flex-start">
+        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
+          <Grid container spacing={{ xs: 2, md: 6 }} alignItems="flex-start">
             {/* Left Column - Granite Monument Images */}
             <Grid item xs={12} md={7}>
               <Box sx={{ position: 'relative' }}>
                 {/* Main Monument Image */}
                 <Box
                   sx={{
-                    width: '700px',
-                    height: 400,
+                    width: { xs: 395, sm: 420, md: 700 },
+                    maxWidth: '100%',
+                    height: { xs: 300, sm: 340, md: 400 },
                     backgroundColor: '#f5f5f5',
                     overflow: 'hidden',
                     mb: 2,
@@ -118,7 +220,8 @@ const Home = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     border: '1px solid #e0e0e0',
-                    position: 'relative'
+                    position: 'relative',
+                    mx: 'auto'
                   }}
                 >
                   {aboutSlides.map((src, i) => (
@@ -140,7 +243,7 @@ const Home = () => {
                   ))}
                 </Box>
                 {/* Decorative underline like reference */}
-                <Box sx={{ display: 'flex', gap: 1.5, mt: 1.5, ml: 6 }}>
+                <Box sx={{ display: 'flex', gap: 1.5, mt: 1.5, ml: { md: 6 }, justifyContent: { xs: 'center', md: 'flex-start' } }}>
                   <Box sx={{ width: 40, height: 4, bgcolor: '#0C8A86', borderRadius: 2 }} />
                   <Box sx={{ width: 18, height: 4, bgcolor: '#0C8A86', borderRadius: 2 }} />
                 </Box>
@@ -205,7 +308,20 @@ const Home = () => {
                     letterSpacing: '0.3px'
                   }}
                 >
-                  25+ YEARS IN GRANITE BUSINESS
+                  50+ YEARS IN GRANITE BUSINESS
+                </Typography>
+
+                <Typography
+                  variant="body1"
+                  sx={{
+                    mb: { xs: 2.5, md: 1.25 },
+                    lineHeight: 1.6,
+                    color: '#555',
+                    fontSize: '1rem',
+                    maxWidth: { md: 500 }
+                  }}
+                >
+                  For over 60 years, SB Stones has been a proud, family-owned business in the Jet Black Granite industry. Our Chamrajnagar quarry, located in the heart of South India, is the source of some of the finest, most sought-after Jet Black Granite available globally. With a state-of-the-art manufacturing facility specializing in memorials and monuments, we are fully vertically integrated, managing every stage of production—from quarry extraction to global delivery.
                 </Typography>
 
                 <Typography
@@ -218,78 +334,86 @@ const Home = () => {
                     maxWidth: { md: 500 }
                   }}
                 >
-                  SNA Granites is your source for quality granite monuments from India. Founded in 
-                  2001 by <strong>Ravi Shetty</strong> and <strong>Saravanan</strong>. We now serve a wide and loyal customer 
-                  network across the <strong>USA, Canada, UK, Ireland, Germany, Australia</strong> and <strong>New 
-                  Zealand</strong>.
+                  As a third-generation, family-owned business, we are committed to maintaining the legacy of excellence passed down through the years. Our long-standing reputation, paired with our modern manufacturing machinery and techniques, ensures that we continue to meet and exceed our clients’ expectations worldwide.
                 </Typography>
+              </Box>
+            </Grid>
 
-                <Typography
-                  variant="body1"
+            {/* Full-width About paragraphs */}
+            <Grid item xs={12}>
+              <Typography
+                variant="body1"
+                sx={{
+                  mb: 1,
+                  lineHeight: 1.8,
+                  color: '#555',
+                  fontSize: '1rem'
+                }}
+              >
+                Located in the heart of Chamrajnagar, our quarry is renowned for its rich, deep, and consistent color of Jet Black Granite. This mineral-rich region has supplied the world with premium granite for decades, and our quarry stands at the forefront of that legacy. Our quarry produces granite known for its density, flawless texture, and vibrant black hue. We are committed to providing a steady supply of high‑quality granite for a variety of applications.
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1" component="ul" sx={{ pl: 2, color: '#555', fontSize: '1rem', lineHeight: 1.8, mb: 3 }}>
+                <li>
+                  <strong>For Custom Memorials &amp; Headstones:</strong> Our quarry’s granite is ideal for producing stunning and durable memorials, headstones, and commemorative items.
+                </li>
+                <li>
+                  <strong>For Paving &amp; Flooring:</strong> We also provide smaller blocks and tiles, offering unmatched durability and elegance for outdoor and indoor paving projects.
+                </li>
+              </Typography>
+            </Grid>
+            {/* Buttons moved below full-width text */}
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                <Button
+                  variant="contained"
                   sx={{
-                    mb: 3,
-                    lineHeight: 1.8,
-                    color: '#555',
-                    fontSize: '1rem',
-                    maxWidth: { md: 500 }
+                    backgroundColor: '#b38b59',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    py: 1.5,
+                    px: 4,
+                    borderRadius: 0,
+                    textTransform: 'uppercase',
+                    fontSize: '0.9rem',
+                    '&:hover': {
+                      backgroundColor: '#9a7549',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(179, 139, 89, 0.3)'
+                    },
+                    transition: 'all 0.3s ease'
                   }}
                 >
-                  The founders have more than three decades of experience in the <strong>granite industry</strong>. 
-                  SNA Granites leverages their expertise in all aspects of the business, from 
-                  operating quarries to manufacturing and marketing monuments, to provide 
-                  customers with a simplified and <strong>stress-free buying experience</strong>.
-                </Typography>
-
-                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: '#b38b59',
+                  KNOW MORE
+                </Button>
+                
+                <Button
+                  variant="outlined"
+                  sx={{
+                    borderColor: '#1a365d',
+                    color: '#1a365d',
+                    fontWeight: 'bold',
+                    py: 1.5,
+                    px: 4,
+                    borderRadius: 0,
+                    textTransform: 'uppercase',
+                    fontSize: '0.9rem',
+                    borderWidth: '2px',
+                    '&:hover': {
+                      backgroundColor: '#1a365d',
                       color: 'white',
-                      fontWeight: 'bold',
-                      py: 1.5,
-                      px: 4,
-                      borderRadius: 0,
-                      textTransform: 'uppercase',
-                      fontSize: '0.9rem',
-                      '&:hover': {
-                        backgroundColor: '#9a7549',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 4px 12px rgba(179, 139, 89, 0.3)'
-                      },
-                      transition: 'all 0.3s ease'
-                    }}
-                  >
-                    KNOW MORE
-                  </Button>
-                  
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      borderColor: '#1a365d',
-                      color: '#1a365d',
-                      fontWeight: 'bold',
-                      py: 1.5,
-                      px: 4,
-                      borderRadius: 0,
-                      textTransform: 'uppercase',
-                      fontSize: '0.9rem',
                       borderWidth: '2px',
-                      '&:hover': {
-                        backgroundColor: '#1a365d',
-                        color: 'white',
-                        borderWidth: '2px',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 4px 12px rgba(26, 54, 93, 0.3)'
-                      },
-                      transition: 'all 0.3s ease'
-                    }}
-                    component={Link}
-                    to="/contact"
-                  >
-                    CONTACT US
-                  </Button>
-                </Box>
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(26, 54, 93, 0.3)'
+                    },
+                    transition: 'all 0.3s ease'
+                  }}
+                  component={Link}
+                  to="/contact"
+                >
+                  CONTACT US
+                </Button>
               </Box>
             </Grid>
           </Grid>
@@ -345,7 +469,7 @@ const Home = () => {
                     mt: { xs: 1, md: 4 },
                     display: 'grid',
                     gridTemplateColumns: {
-                      xs: '1fr',
+                      xs: 'repeat(2, 1fr)',
                       sm: 'repeat(2, 1fr)',
                       md: 'repeat(6, 1fr)',
                     },
@@ -429,19 +553,13 @@ const Home = () => {
             const items = Array.from({ length: 15 }).map((_, i) => ({
               id: i + 1,
               model: `AG-11${String(i + 1).padStart(2, '0')}`,
-              image: `/images/design-${i + 1}.png`,
+              image: `/images/products/${i + 1}.png`,
             }));
 
             return (
-              <Grid container spacing={3} columns={{ xs: 12, sm: 12, md: 12, lg: 12, xl: 12 }}>
-                {items.map((d) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={4}
-                    md={4}
-                    lg={4}
-                    xl={4}
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(5, 1fr)' }, gap: 3 }}>
+                {items.map((d, idx) => (
+                  <Box
                     key={d.id}
                     id={`design-${d.id}`}
                     className={`animation-trigger ${animatedElements[`design-${d.id}`] ? 'fade-in-up' : ''}`}
@@ -465,21 +583,25 @@ const Home = () => {
                         '&:hover': { boxShadow: '0 8px 18px rgba(0,0,0,0.12)' },
                       }}
                     >
-                      <Box sx={{ position: 'relative', height: 200, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                      <Box sx={{ position: 'relative', height: 200, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
+                                 '&:hover img': { transform: 'scale(0.95)' },
+                                 '&:hover .zoom-overlay': { opacity: 1 } }}>
                         <img
                           src={d.image}
                           alt={d.model}
-                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'zoom-in' }}
                           onError={(e) => { e.currentTarget.src = '/images/about-1.png'; }}
+                          onClick={() => openLightbox(idx)}
                         />
-                        {/* Zoom link */}
-                        <a href={d.image}
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           style={{ position: 'absolute', right: 8, top: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, borderRadius: 4, border: '1px solid #E5EAF0', background: '#fff', color: '#16324F', textDecoration: 'none' }}
-                           aria-label={`Zoom ${d.model}`}>
+                        {/* Zoom overlay */}
+                        <Box
+                          className="zoom-overlay"
+                          onClick={() => openLightbox(idx)}
+                          sx={{ position: 'absolute', right: 8, top: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 4, border: '1px solid #E5EAF0', background: '#fff', color: '#16324F', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease' }}
+                          aria-label={`Zoom ${d.model}`}
+                        >
                           <ZoomIn style={{ fontSize: 20 }} />
-                        </a>
+                        </Box>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16324F' }}>
                         <Box>
@@ -501,21 +623,21 @@ const Home = () => {
                         })()}
                       </Box>
                     </Box>
-                  </Grid>
+                  </Box>
                 ))}
-              </Grid>
+              </Box>
             );
           })()}
         </Container>
       </Box>
 
-      {/* Products Section */}
+      {/* Premium Section */}
       <Box 
-        id="products-section" 
+        id="premiums-section" 
         className={`animation-trigger ${animatedElements['products-section'] ? 'fade-in-up' : ''}`}
         sx={{ py: 8, backgroundColor: '#f5f5f5' }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth={false} sx={{ px: { xs: 2, md: 0 } }}>
           <Typography
             variant="h4"
             component="h2"
@@ -525,57 +647,64 @@ const Home = () => {
           >
             Our Premium Collection
           </Typography>
-          <Grid container spacing={4}>
-            {products.map((product, index) => (
-              <Grid 
-                item 
-                xs={12} 
-                sm={6} 
-                md={4} 
-                key={product.id}
-                id={`product-${product.id}`}
-                className={`animation-trigger ${animatedElements[`product-${product.id}`] ? 'fade-in-up' : ''}`}
-                sx={{
-                  opacity: animatedElements[`product-${product.id}`] ? 1 : 0,
-                  transform: animatedElements[`product-${product.id}`] ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                }}
-              >
-                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} className="product-card">
-                  <CardMedia
-                    component="div"
-                    height="200"
-                    sx={{
-                      height: 200,
-                      backgroundColor: imageErrors[product.id] ? '#b38b59' : 'transparent',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '1rem'
-                    }}
-                  >
-                    {imageErrors[product.id] ? (
-                      <Typography>Image not available</Typography>
-                    ) : (
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        onError={() => handleImageError(product.id)}
-                      />
-                    )}
-                  </CardMedia>
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h3" sx={{ fontWeight: 'bold' }}>
-                      {product.title}
-                    </Typography>
-                    <Typography>{product.description}</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+          <Box sx={{ maxWidth: 1600, width: '100%', mx: 'auto', px: { xs: 2, md: 0 } }}>
+            <Grid container spacing={4} justifyContent="center">
+              {products.map((product, index) => (
+                <Grid 
+                  item 
+                  xs={12} 
+                  sm={12} 
+                  md={12} 
+                  key={product.id}
+                  id={`product-${product.id}`}
+                  className={`animation-trigger ${animatedElements[`product-${product.id}`] ? 'fade-in-up' : ''}`}
+                  sx={{
+                    opacity: animatedElements[`product-${product.id}`] ? 1 : 0,
+                    transform: animatedElements[`product-${product.id}`] ? 'translateY(0)' : 'translateY(20px)',
+                    transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Box sx={{ maxWidth: 700, width: '100%', mx: 'auto' }}>
+                  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} className="product-card">
+                    <CardMedia
+                      component="div"
+                      height={200}
+                      sx={{
+                        height: 300,
+                        backgroundColor: imageErrors[product.id] ? '#b38b59' : 'transparent',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {imageErrors[product.id] ? (
+                        <Typography>Image not available</Typography>
+                      ) : (
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                          onError={() => handleImageError(product.id)}
+                          onLoad={() => setImageErrors(prev => ({ ...prev, [product.id]: false }))}
+                        />
+                      )}
+                    </CardMedia>
+                    <CardContent sx={{ flexGrow: 1, minHeight: 120 }}>
+                      <Typography gutterBottom variant="h5" component="h3" sx={{ fontWeight: 'bold' }}>
+                        {product.title}
+                      </Typography>
+                      <Typography>{product.description}</Typography>
+                    </CardContent>
+                  </Card>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
           <Box sx={{ textAlign: 'center', mt: 4 }}>
             <Button
               variant="outlined"
@@ -695,6 +824,112 @@ const Home = () => {
               directly to your address as per your requirements, using either a flatbed truck, a box truck with a liftgate, or directly in containers.
             </Typography>
           </Box>
+        </Container>
+      </Box>
+
+      {/* Popular Designs (Slider) */}
+      <Box
+        id="popular-designs"
+        className={`animation-trigger ${animatedElements['popular-designs'] ? 'fade-in-up' : ''}`}
+        sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#ffffff' }}
+      >
+        <Container maxWidth="xl">
+          <Box sx={{ textAlign: 'center', mb: 5 }}>
+            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, letterSpacing: 2, color: '#16324F' }}>
+              POPULAR DESIGNS
+            </Typography>
+            <Typography sx={{ color: '#5b6b7b', mt: 2 }}>
+              If you need further assistance or have any specific details to include, don’t hesitate to ask!
+            </Typography>
+          </Box>
+
+          {(() => {
+            const items = Array.from({ length: totalDesigns }).map((_, i) => ({
+              id: i + 1,
+              model: `AG-11${String(i + 1).padStart(2, '0')}`,
+              image: `/images/products/${i + 1}.png`,
+            }));
+            const teal = '#0C8A86';
+
+            return (
+              <Box sx={{ position: 'relative', maxWidth: 1450, mx: 'auto' }}>
+                {/* Track */}
+                <Box
+                  ref={designsSliderRef}
+                  sx={{
+                    display: 'flex',
+                    gap: 3,
+                    overflowX: 'auto',
+                    scrollBehavior: 'smooth',
+                    scrollSnapType: 'x mandatory',
+                    px: 1,
+                    '&::-webkit-scrollbar': { display: 'none' },
+                  }}
+                  onMouseEnter={() => setAutoPlayDesigns(false)}
+                  onMouseLeave={() => setAutoPlayDesigns(true)}
+                  onScroll={updateDesignsPageFromScroll}
+                >
+                  {items.map((d, idx) => (
+                    <Box
+                      key={d.id}
+                      className="popular-design-card"
+                      sx={{
+                        scrollSnapAlign: 'start',
+                        flex: {
+                          xs: '0 0 calc((100% - 24px) / 2)',
+                          sm: '0 0 calc((100% - 48px) / 3)',
+                          md: '0 0 calc((100% - 96px) / 5)',
+                        },
+                        backgroundColor: '#ffffff',
+                        borderRadius: 1,
+                        p: 2,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+                        border: '1px solid #E5EAF0',
+                      }}
+                    >
+                      <Box sx={{ position: 'relative', height: 220, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', '&:hover img': { transform: 'scale(0.95)' }, '&:hover .zoom-overlay': { opacity: 1 } }}>
+                        <img
+                          src={d.image}
+                          alt={d.model}
+                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'zoom-in' }}
+                          onError={(e) => { e.currentTarget.src = '/images/about-1.png'; }}
+                          onClick={() => openLightbox(idx)}
+                        />
+                        <Box className="zoom-overlay" onClick={() => openLightbox(idx)} sx={{ position: 'absolute', right: 8, top: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 4, border: '1px solid #E5EAF0', background: '#fff', color: '#16324F', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease' }}>
+                          <ZoomIn style={{ fontSize: 20 }} />
+                        </Box>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16324F', mt: 1.5 }}>
+                        <Box>
+                          <Typography sx={{ fontSize: 12, color: '#64748b' }}>MODEL NO.</Typography>
+                          <Typography sx={{ fontWeight: 800, fontSize: 14 }}>{d.model}</Typography>
+                        </Box>
+                        {(() => {
+                          const imgUrl = typeof window !== 'undefined' ? `${window.location.origin}${d.image}` : d.image;
+                          const subject = `Request a Quote for ${d.model}`;
+                          const body = `I am interested to get a quote on this model ${d.model}, Modal Image - ${imgUrl}`;
+                          const mailHref = `mailto:info@astronglobal.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&bcc=`;
+                          return (
+                            <a href={mailHref} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#b38b59', textDecoration: 'none', fontWeight: 700, fontSize: 12 }}>
+                              <MailOutline sx={{ fontSize: 16, color: '#b38b59' }} />
+                              <span>Get a Quote</span>
+                            </a>
+                          );
+                        })()}
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+
+                {/* Dots */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 3 }}>
+                  {Array.from({ length: designsPagesCount }).map((_, i) => (
+                    <Box key={i} onClick={() => slidePopularDesignsOne(i - designsPage)} sx={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: i === designsPage ? teal : '#CBD5E1', cursor: 'pointer' }} />
+                  ))}
+                </Box>
+              </Box>
+            );
+          })()}
         </Container>
       </Box>
 
@@ -829,9 +1064,56 @@ const Home = () => {
         </Container>
       </Box>
 
-      {/* Removed duplicate Products Section below testimonials */}
-     </>
-   );
- };
+      {/* Lightbox Dialog for Designs */}
+      <Dialog open={lightboxOpen} onClose={closeLightbox} maxWidth="md" fullWidth
+              PaperProps={{ sx: { background: 'transparent', boxShadow: 'none' } }}
+              BackdropProps={{ sx: { backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(2px)' } }}>
+        <DialogContent sx={{ p: 0, position: 'relative', backgroundColor: 'transparent' }}>
+          {/* Counter at top center */}
+          <Box sx={{ position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)', color: '#fff', fontWeight: 700, letterSpacing: 1, fontSize: 16 }}>
+            {lightboxIndex + 1} / {totalDesigns}
+          </Box>
+
+          {/* Close button */}
+          <IconButton onClick={closeLightbox} sx={{ position: 'absolute', right: 10, top: 10, zIndex: 2, color: '#fff', '&:hover': { opacity: 0.9 } }} aria-label="Close">
+            <Close />
+          </IconButton>
+
+          {/* Prev/Next arrows */}
+          <IconButton onClick={showPrev} sx={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', zIndex: 2, color: '#fff', '&:hover': { opacity: 0.9 } }} aria-label="Previous">
+            <ChevronLeft sx={{ fontSize: 44 }} />
+          </IconButton>
+          <IconButton onClick={showNext} sx={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', zIndex: 2, color: '#fff', '&:hover': { opacity: 0.9 } }} aria-label="Next">
+            <ChevronRight sx={{ fontSize: 44 }} />
+          </IconButton>
+
+          {/* Image with smooth zoom-in animation */}
+          {lightboxSrc && (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: { xs: 300, md: 480 }, py: { xs: 2, md: 4 } }}>
+              <Box
+                key={lightboxSrc}
+                component="img"
+                src={lightboxSrc}
+                alt={getModelByIndex(lightboxIndex)}
+                sx={{ width: '100%', height: 'auto', display: 'block', maxHeight: '80vh', objectFit: 'contain',
+                     animation: 'zoomInLightbox 220ms ease-out',
+                     '@keyframes zoomInLightbox': {
+                       '0%': { transform: 'scale(0.94)', opacity: 0 },
+                       '100%': { transform: 'scale(1)', opacity: 1 },
+                     },
+                }}
+              />
+            </Box>
+          )}
+
+          {/* Caption at bottom center */}
+          <Box sx={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', color: '#fff', fontWeight: 800, letterSpacing: 1, bgcolor: 'rgba(0,0,0,0.45)', px: 2, py: 0.5, borderRadius: 1 }}>
+            {getModelByIndex(lightboxIndex)}
+          </Box>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+};
 
 export default Home;

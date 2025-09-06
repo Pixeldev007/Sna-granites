@@ -1,181 +1,113 @@
-import React, { useState } from 'react';
-import { Box, Container, Grid, Typography, Card, CardContent, CardMedia, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Typography, Dialog, DialogContent, IconButton } from '@mui/material';
 import useScrollAnimation from '../components/hooks/useScrollAnimation';
+import { MailOutline, ZoomIn, Close, ChevronLeft, ChevronRight } from '@mui/icons-material';
 
 const Products = () => {
-  // Sample product data
-  const products = [
-    {
-      id: 1,
-      title: 'Black Galaxy',
-      description: 'Premium black granite with golden specks. Perfect for kitchen countertops and flooring.',
-      category: 'Kitchen',
-      price: '₹250/sq.ft',
-      image: '/placeholder.jpg',
-    },
-    {
-      id: 2,
-      title: 'White Pearl',
-      description: 'Elegant white granite with pearl finish. Ideal for bathroom vanities and wall cladding.',
-      category: 'Bathroom',
-      price: '₹300/sq.ft',
-      image: '/placeholder.jpg',
-    },
-    {
-      id: 3,
-      title: 'Rosewood',
-      description: 'Beautiful pink granite with natural patterns. Great for interior design accents.',
-      category: 'Interior',
-      price: '₹200/sq.ft',
-      image: '/placeholder.jpg',
-    },
-    {
-      id: 4,
-      title: 'Imperial Red',
-      description: 'Rich red granite with dark veins. Excellent for exterior applications and monuments.',
-      category: 'Exterior',
-      price: '₹275/sq.ft',
-      image: '/placeholder.jpg',
-    },
-    {
-      id: 5,
-      title: 'Blue Pearl',
-      description: 'Striking blue granite with pearl-like shimmer. Perfect for feature walls and countertops.',
-      category: 'Interior',
-      price: '₹350/sq.ft',
-      image: '/placeholder.jpg',
-    },
-    {
-      id: 6,
-      title: 'Rainforest Green',
-      description: 'Lush green granite with natural forest patterns. Ideal for kitchen islands and flooring.',
-      category: 'Kitchen',
-      price: '₹280/sq.ft',
-      image: '/placeholder.jpg',
-    },
-  ];
-
-  const [imageErrors, setImageErrors] = useState({});
   const animatedElements = useScrollAnimation(0.1);
+  const totalDesigns = 15;
+  const items = Array.from({ length: totalDesigns }).map((_, i) => ({
+    id: i + 1,
+    model: `AG-11${String(i + 1).padStart(2, '0')}`,
+    image: `/images/products/${i + 1}.png`,
+  }));
 
-  const handleImageError = (imageId) => {
-    setImageErrors(prev => ({ ...prev, [imageId]: true }));
-  };
+  // Lightbox (same behavior/style as Home)
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const getSrcByIndex = (idx) => `/images/products/${idx + 1}.png`;
+  const getModelByIndex = (idx) => `AG-11${String(idx + 1).padStart(2, '0')}`;
+  const openLightbox = (idx) => { setLightboxIndex(idx); setLightboxOpen(true); };
+  const closeLightbox = () => setLightboxOpen(false);
+  const showPrev = () => setLightboxIndex((i) => (i - 1 + totalDesigns) % totalDesigns);
+  const showNext = () => setLightboxIndex((i) => (i + 1) % totalDesigns);
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const onKey = (e) => {
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightboxOpen]);
 
   return (
     <>
-      {/* Page Header */}
-      <Box
-        sx={{
-          backgroundColor: '#1a365d',
-          color: 'white',
-          py: 6,
-          textAlign: 'center',
-        }}
-        className="fade-in"
-      >
-        <Container maxWidth="lg">
-          <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-            Our Products
-          </Typography>
-          <Typography variant="h6" component="p">
-            Premium granite solutions for every space
-          </Typography>
+      {/* New Arrivals - same style as Wide Range of Designs */}
+      <Box id="products-new-arrivals" className={`animation-trigger ${animatedElements['products-new-arrivals'] ? 'fade-in-up' : ''}`} sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#e9f1f4' }}>
+        <Container maxWidth={false} sx={{ maxWidth: 1600, mx: 'auto', width: '100%' }}>
+          <Box sx={{ textAlign: 'center', mb: 5 }}>
+            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, letterSpacing: 2, color: '#16324F' }}>
+              NEW ARRIVALS
+            </Typography>
+            <Typography sx={{ color: '#5b6b7b', mt: 2 }}>
+              We offer a comprehensive range of memorials in various colors.
+            </Typography>
+            <Typography sx={{ color: '#5b6b7b' }}>
+              We also produce custom designs as per specifications given by the customer.
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(5, 1fr)' }, gap: 3 }}>
+            {items.map((d, idx) => (
+              <Box key={d.id} sx={{ opacity: 1, transform: 'translateY(0)', transition: 'opacity 0.6s ease-out, transform 0.6s ease-out' }}>
+                <Box sx={{ backgroundColor: '#ffffff', border: '1px solid #E5EAF0', borderRadius: 1, p: 2, height: '100%', display: 'flex', flexDirection: 'column', gap: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.06)', '&:hover': { boxShadow: '0 8px 18px rgba(0,0,0,0.12)' } }}>
+                  <Box sx={{ position: 'relative', height: 220, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', '&:hover img': { transform: 'scale(0.95)' }, '&:hover .zoom-overlay': { opacity: 1 } }}>
+                    <img src={d.image} alt={d.model} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'zoom-in' }} onClick={() => openLightbox(idx)} />
+                    <Box className="zoom-overlay" onClick={() => openLightbox(idx)} sx={{ position: 'absolute', right: 8, top: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 4, border: '1px solid #E5EAF0', background: '#fff', color: '#16324F', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease' }}>
+                      <ZoomIn style={{ fontSize: 20 }} />
+                    </Box>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16324F' }}>
+                    <Box>
+                      <Typography sx={{ fontSize: 12, color: '#64748b' }}>MODEL NO.</Typography>
+                      <Typography sx={{ fontWeight: 800, fontSize: 14 }}>{d.model}</Typography>
+                    </Box>
+                    {(() => {
+                      const imgUrl = typeof window !== 'undefined' ? `${window.location.origin}${d.image}` : d.image;
+                      const subject = `Request a Quote for ${d.model}`;
+                      const body = `I am interested to get a quote on this model ${d.model}, Modal Image - ${imgUrl}`;
+                      const mailHref = `mailto:info@astronglobal.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&bcc=`;
+                      return (
+                        <a href={mailHref} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#b38b59', textDecoration: 'none', fontWeight: 700, fontSize: 12 }}>
+                          <MailOutline sx={{ fontSize: 16, color: '#b38b59' }} />
+                          <span>Get a Quote</span>
+                        </a>
+                      );
+                    })()}
+                  </Box>
+                </Box>
+              </Box>
+            ))}
+          </Box>
         </Container>
       </Box>
 
-      {/* Products Section */}
-      <Box 
-        id="products-section" 
-        className={`animation-trigger ${animatedElements['products-section'] ? 'fade-in-up' : ''}`}
-        sx={{ py: 8 }}
-      >
-        <Container maxWidth="lg">
-          <Grid container spacing={4}>
-            {products.map((product, index) => (
-              <Grid 
-                item 
-                xs={12} 
-                sm={6} 
-                md={4} 
-                key={product.id}
-                id={`product-${product.id}`}
-                className={`animation-trigger ${animatedElements[`product-${product.id}`] ? 'fade-in-up' : ''}`}
-                sx={{
-                  opacity: animatedElements[`product-${product.id}`] ? 1 : 0,
-                  transform: animatedElements[`product-${product.id}`] ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                }}
-              >
-                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} className="product-card">
-                  <CardMedia
-                    component="div"
-                    height="200"
-                    sx={{
-                      height: 200,
-                      backgroundColor: imageErrors[product.id] ? '#b38b59' : 'transparent',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '1rem'
-                    }}
-                  >
-                    {imageErrors[product.id] ? (
-                      <Typography>Image not available</Typography>
-                    ) : (
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        onError={() => handleImageError(product.id)}
-                      />
-                    )}
-                  </CardMedia>
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                      <Typography gutterBottom variant="h6" component="h3" sx={{ fontWeight: 'bold' }}>
-                        {product.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {product.category}
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary" paragraph>
-                      {product.description}
-                    </Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
-                      <Typography variant="h6" color="primary" sx={{ fontWeight: 'bold' }}>
-                        {product.price}
-                      </Typography>
-                      <Button 
-                        variant="contained" 
-                        size="small" 
-                        sx={{ 
-                          backgroundColor: '#b38b59', 
-                          color: 'white',
-                          fontWeight: 'bold',
-                          '&:hover': {
-                            backgroundColor: '#9c7a4d',
-                            transform: 'translateY(-2px)',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
-                          },
-                          transition: 'all 0.3s ease'
-                        }}
-                        component={Link}
-                        to="/contact"
-                      >
-                        Enquire Now
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
+      {/* Lightbox Dialog for products */}
+      <Dialog open={lightboxOpen} onClose={closeLightbox} maxWidth="md" fullWidth
+              PaperProps={{ sx: { background: 'transparent', boxShadow: 'none' } }}
+              BackdropProps={{ sx: { backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(2px)' } }}>
+        <DialogContent sx={{ p: 0, position: 'relative', backgroundColor: 'transparent' }}>
+          <Box sx={{ position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)', color: '#fff', fontWeight: 700, letterSpacing: 1, fontSize: 16 }}>
+            {lightboxIndex + 1} / {totalDesigns}
+          </Box>
+          <IconButton onClick={closeLightbox} sx={{ position: 'absolute', right: 10, top: 10, zIndex: 2, color: '#fff', '&:hover': { opacity: 0.9 } }} aria-label="Close">
+            <Close />
+          </IconButton>
+          <IconButton onClick={showPrev} sx={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', zIndex: 2, color: '#fff', '&:hover': { opacity: 0.9 } }} aria-label="Previous">
+            <ChevronLeft sx={{ fontSize: 44 }} />
+          </IconButton>
+          <IconButton onClick={showNext} sx={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', zIndex: 2, color: '#fff', '&:hover': { opacity: 0.9 } }} aria-label="Next">
+            <ChevronRight sx={{ fontSize: 44 }} />
+          </IconButton>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: { xs: 300, md: 480 }, py: { xs: 2, md: 4 } }}>
+            <Box key={lightboxIndex} component="img" src={getSrcByIndex(lightboxIndex)} alt={getModelByIndex(lightboxIndex)} sx={{ width: '100%', height: 'auto', display: 'block', maxHeight: '80vh', objectFit: 'contain', animation: 'zoomInLightbox 220ms ease-out', '@keyframes zoomInLightbox': { '0%': { transform: 'scale(0.94)', opacity: 0 }, '100%': { transform: 'scale(1)', opacity: 1 } } }} />
+          </Box>
+          <Box sx={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', color: '#fff', fontWeight: 800, letterSpacing: 1, bgcolor: 'rgba(0,0,0,0.45)', px: 2, py: 0.5, borderRadius: 1 }}>
+            {getModelByIndex(lightboxIndex)}
+          </Box>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

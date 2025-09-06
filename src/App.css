@@ -217,6 +217,12 @@
 @media (max-width: 900px) {
   .hero-slider h1 { font-size: 2rem !important; }
   .hero-slider h5 { font-size: 1rem !important; }
+  /* Make slider bleed edge-to-edge on small screens */
+  .hero-slider {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
 }
 @media (max-width: 600px) {
   .hero-slider { height: 55vh; }

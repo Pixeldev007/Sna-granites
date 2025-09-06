@@ -65,7 +65,7 @@ const HeroSlider = ({ slides = [], interval = 5000, height = '55vh' }) => {
             }}
           >
             <Box className="hero-overlay" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-              <Container maxWidth="lg">
+              <Container maxWidth={false} disableGutters sx={{ px: 0 }}>
                 <Box sx={{ color: 'white', textAlign: 'center' }}>
                   <Typography
                     variant="h2"
