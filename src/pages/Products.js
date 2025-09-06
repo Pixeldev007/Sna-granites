@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Container, Grid, Typography, Card, CardContent, CardMedia, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import useScrollAnimation from '../components/hooks/useScrollAnimation';
@@ -54,15 +54,6 @@ const Products = () => {
       price: '₹280/sq.ft',
       image: '/placeholder.jpg',
     },
-  ];
-
-  // Product categories
-  const categories = [
-    { id: 'all', name: 'All Products' },
-    { id: 'kitchen', name: 'Kitchen' },
-    { id: 'bathroom', name: 'Bathroom' },
-    { id: 'interior', name: 'Interior' },
-    { id: 'exterior', name: 'Exterior' },
   ];
 
   const [imageErrors, setImageErrors] = useState({});

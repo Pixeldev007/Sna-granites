@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button, Grid, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import TopBar from './components/layout/TopBar';
@@ -21,7 +21,6 @@ import {
   PhotoCameraOutlined,
   LocalShippingOutlined,
   DoorFrontOutlined,
-  CreditCardOutlined,
   ExpandMore,
   HelpOutlineOutlined,
   Star,
@@ -42,7 +41,7 @@ const FAQ = () => {
     { q: 'CAN YOU PROVIDE DRAWINGS/SKETCHES ALONG WITH PRICE QUOTE OR FOR THE MONUMENTS ORDERED?', a: 'Certainly. CAD drawings are provided for approval prior to production and can accompany price quotations upon request.' },
   ];
 
-  const cardStyles = { border: '1px solid #E5EAF0', borderRadius: 1, backgroundColor: '#ffffff' };
+  // const cardStyles = { border: '1px solid #E5EAF0', borderRadius: 1, backgroundColor: '#ffffff' };
 
   return (
     <Box sx={{ backgroundColor: '#ffffff' }}>

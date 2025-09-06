@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Container, Grid, Typography, TextField, Button, Card, CardContent } from '@mui/material';
-import { LocationOn, Phone, Email } from '@mui/icons-material';
+import { Box, Container, Grid, Typography, TextField, Button } from '@mui/material';
 
 const Contact = () => {
   const [formData, setFormData] = useState({

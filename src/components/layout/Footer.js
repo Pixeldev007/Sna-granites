@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, Link as MuiLink, IconButton, Divider, Stack } from '@mui/material';
+import { Box, Grid, Typography, Link as MuiLink, IconButton, Divider, Stack } from '@mui/material';
 import { Facebook, Instagram, LinkedIn, Email, Phone, LocationOn } from '@mui/icons-material';
 import CTAButton from '../common/CTAButton';
 

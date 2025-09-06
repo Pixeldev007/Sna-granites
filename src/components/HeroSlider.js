@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
@@ -18,16 +18,16 @@ const HeroSlider = ({ slides = [], interval = 5000, height = '55vh' }) => {
   const timerRef = useRef(null);
   const touchStartX = useRef(0);
 
-  const goTo = (i) => setIndex((i + validSlides.length) % validSlides.length);
-  const next = () => goTo(index + 1);
-  const prev = () => goTo(index - 1);
+  const goTo = useCallback((i) => setIndex((i + validSlides.length) % validSlides.length), [validSlides.length]);
+  const next = useCallback(() => setIndex((i) => (i + 1) % validSlides.length), [validSlides.length]);
+  const prev = useCallback(() => setIndex((i) => (i - 1 + validSlides.length) % validSlides.length), [validSlides.length]);
 
   // autoplay
   useEffect(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(next, interval);
+    timerRef.current = setInterval(() => next(), interval);
     return () => clearInterval(timerRef.current);
-  }, [index, interval]);
+  }, [interval, next]);
 
   // keyboard accessibility
   useEffect(() => {
@@ -37,7 +37,7 @@ const HeroSlider = ({ slides = [], interval = 5000, height = '55vh' }) => {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [index]);
+  }, [next, prev]);
 
   return (
     <Box className="hero-slider" sx={{ position: 'relative', height, overflow: 'hidden' }}>

@@ -60,7 +60,7 @@ const Home = () => {
   useEffect(() => {
     const t = setInterval(() => setAboutIdx(i => (i + 1) % aboutSlides.length), 3000);
     return () => clearInterval(t);
-  }, []);
+  }, [aboutSlides.length]);
 
   // Testimonials slider
   const testimonialsRef = useRef(null);
