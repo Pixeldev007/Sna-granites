@@ -93,7 +93,7 @@ const Home = () => {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [lightboxOpen, lightboxIndex]);
+  }, [lightboxOpen, lightboxIndex, showPrev, showNext]);
 
   // About section simple slider images
   const aboutSlides = ['/images/about-1.png', '/images/about-3.png', '/images/about-4.png'];
@@ -146,13 +146,6 @@ const Home = () => {
     window.addEventListener('resize', setByWidth);
     return () => window.removeEventListener('resize', setByWidth);
   }, []);
-  const slidePopularDesigns = (dir = 1) => {
-    const el = designsSliderRef.current;
-    if (!el) return;
-    const card = el.querySelector('.popular-design-card');
-    const cardWidth = card ? card.getBoundingClientRect().width : el.clientWidth / designsItemsPerView;
-    el.scrollBy({ left: dir * (cardWidth + designsGapPx) * designsItemsPerView, behavior: 'smooth' });
-  };
   const slidePopularDesignsOne = (dir = 1) => {
     const el = designsSliderRef.current;
     if (!el) return;
@@ -185,7 +178,9 @@ const Home = () => {
     if (!autoPlayDesigns) return;
     const id = setInterval(() => slidePopularDesignsOne(1), 2000); // faster auto-slide, one card at a time
     return () => clearInterval(id);
-  }, [autoPlayDesigns, designsItemsPerView]);
+  }, [autoPlayDesigns, designsItemsPerView, slidePopularDesignsOne]);
+
+  // removed unused slidePopularDesigns to satisfy eslint (no-unused-vars)
 
   const handleImageError = (imageId) => {
     setImageErrors(prev => ({ ...prev, [imageId]: true }));
