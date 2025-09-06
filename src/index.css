@@ -1,0 +1,55 @@
+/**** Global Typography ****/
+/* Body copy, paragraphs, subheadings */
+:root {
+  --font-heading: 'Rubik', system-ui, -apple-system, Segoe UI, Roboto, Arial, 'Helvetica Neue', sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, Segoe UI, Roboto, Arial, 'Helvetica Neue', sans-serif;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #1f2937;
+}
+
+/* Paragraphs and default text */
+p, li, span, label, input, textarea, button, .MuiTypography-body1, .MuiTypography-body2 {
+  font-family: var(--font-body) !important;
+}
+
+/* Headings and titles */
+h1, h2, h3, h4, h5, h6,
+.MuiTypography-h1, .MuiTypography-h2, .MuiTypography-h3,
+.MuiTypography-h4, .MuiTypography-h5, .MuiTypography-h6,
+.MuiButton-root .MuiButton-label {
+  font-family: var(--font-heading) !important;
+}
+
+/* Subtitles (MUI subtitle1/subtitle2) use body font per request */
+.MuiTypography-subtitle1, .MuiTypography-subtitle2 {
+  font-family: var(--font-body) !important;
+}
+
+/* Site-wide max width (disabled per request). Control widths per section instead. */
+/* .MuiContainer-root {
+  max-width: var(--site-max-width) !important;
+} */
+
+/* Optional utility for non-MUI sections (max-width disabled) */
+.section,
+.section-container {
+  /* max-width: var(--site-max-width); */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}

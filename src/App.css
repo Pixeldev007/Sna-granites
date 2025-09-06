@@ -1,0 +1,247 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.fade-in-left {
+  animation: fadeInLeft 0.6s ease-out forwards;
+}
+
+.fade-in-right {
+  animation: fadeInRight 0.6s ease-out forwards;
+}
+
+/* Staggered animations */
+.staggered-animation {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Custom styles for SNA Granites */
+
+/* Hero section styling */
+.hero-section {
+  /* Background with gradient only since hero-bg.jpg is missing */
+  background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.9));
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 100px 0;
+}
+
+/* Product card styling */
+.product-card {
+  transition: transform 0.3s ease-in-out;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Gallery image styling */
+.gallery-image {
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.gallery-image:hover {
+  transform: scale(1.05);
+}
+
+/* Contact form styling */
+.contact-form {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer styling */
+.footer {
+  background-color: #1a365d;
+  color: white;
+  padding: 40px 0;
+}
+
+/* HeroSlider base */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+}
+
+.hero-slider .hero-slide {
+  will-change: opacity, transform;
+}
+
+/* Arrows */
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 28px;
+  line-height: 44px;
+  text-align: center;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+.hero-arrow.left { left: 16px; }
+.hero-arrow.right { right: 16px; }
+.hero-arrow:hover { background: rgba(0,0,0,0.6); transform: translateY(-50%) scale(1.06); }
+
+/* Underline-style navigation for slider */
+.hero-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 14px;
+}
+.hero-dots .dot {
+  width: 22px;      /* underscore length (inactive) */
+  height: 2px;      /* underscore thickness (inactive) */
+  border: none;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.55);
+  cursor: pointer;
+  transition: background .2s ease, width .2s ease, height .2s ease, transform .2s ease;
+}
+.hero-dots .dot.active {
+  width: 44px;      /* longer underscore for active */
+  height: 3px;      /* thicker underscore for active */
+  background: #ffffff;
+}
+
+/* Responsive typography for hero overlay */
+@media (max-width: 900px) {
+  .hero-slider h1 { font-size: 2rem !important; }
+  .hero-slider h5 { font-size: 1rem !important; }
+}
+@media (max-width: 600px) {
+  .hero-slider { height: 55vh; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 60px 0;
+  }
+  
+  .contact-info, .contact-form {
+    margin-bottom: 30px;
+  }
+}
+
+/* Navigation link styles (for Header NavLink) */
+.nav-link {
+  position: relative;
+  border-radius: 0; /* rectangular buttons */
+}
+.nav-link:hover {
+  background-color: rgba(0,0,0,0.04) !important;
+}
+.nav-link.active {
+  background-color: #b38b59 !important; /* gold */
+  color: #ffffff !important;
+}
