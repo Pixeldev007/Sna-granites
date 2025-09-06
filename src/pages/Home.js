@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Box, Container, Grid, Typography, Button, Card, CardContent, CardMedia, Dialog, DialogContent, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import useScrollAnimation from '../components/hooks/useScrollAnimation';
@@ -62,24 +62,28 @@ const Home = () => {
   const [lightboxSrc, setLightboxSrc] = useState(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const totalDesigns = 15;
-  const getSrcByIndex = (idx) => `/images/products/${idx + 1}.png`;
-  const getModelByIndex = (idx) => `AG-11${String(idx + 1).padStart(2, '0')}`;
+  const getSrcByIndex = useCallback((idx) => `/images/products/${idx + 1}.png`, []);
+  const getModelByIndex = useCallback((idx) => `AG-11${String(idx + 1).padStart(2, '0')}`, []);
   const openLightbox = (idx) => {
     setLightboxIndex(idx);
     setLightboxSrc(getSrcByIndex(idx));
     setLightboxOpen(true);
   };
   const closeLightbox = () => setLightboxOpen(false);
-  const showPrev = () => {
-    const nextIdx = (lightboxIndex - 1 + totalDesigns) % totalDesigns;
-    setLightboxIndex(nextIdx);
-    setLightboxSrc(getSrcByIndex(nextIdx));
-  };
-  const showNext = () => {
-    const nextIdx = (lightboxIndex + 1) % totalDesigns;
-    setLightboxIndex(nextIdx);
-    setLightboxSrc(getSrcByIndex(nextIdx));
-  };
+  const showPrev = useCallback(() => {
+    setLightboxIndex((i) => {
+      const nextIdx = (i - 1 + totalDesigns) % totalDesigns;
+      setLightboxSrc(getSrcByIndex(nextIdx));
+      return nextIdx;
+    });
+  }, [getSrcByIndex, totalDesigns]);
+  const showNext = useCallback(() => {
+    setLightboxIndex((i) => {
+      const nextIdx = (i + 1) % totalDesigns;
+      setLightboxSrc(getSrcByIndex(nextIdx));
+      return nextIdx;
+    });
+  }, [getSrcByIndex, totalDesigns]);
   useEffect(() => {
     if (!lightboxOpen) return;
     const onKey = (e) => {
@@ -146,7 +150,7 @@ const Home = () => {
     window.addEventListener('resize', setByWidth);
     return () => window.removeEventListener('resize', setByWidth);
   }, []);
-  const slidePopularDesignsOne = (dir = 1) => {
+  const slidePopularDesignsOne = useCallback((dir = 1) => {
     const el = designsSliderRef.current;
     if (!el) return;
     const card = el.querySelector('.popular-design-card');
@@ -163,7 +167,7 @@ const Home = () => {
       return;
     }
     el.scrollBy({ left: distance, behavior: 'smooth' });
-  };
+  }, [designsItemsPerView, designsGapPx]);
   const updateDesignsPageFromScroll = () => {
     const el = designsSliderRef.current;
     if (!el) return;
