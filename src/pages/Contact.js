@@ -226,7 +226,7 @@ const Contact = () => {
         <Container maxWidth="lg">
           <Box sx={{ borderRadius: 2, overflow: 'hidden' }}>
             <iframe
-              title="SNA Granites Map"
+              title="SB Stones Map"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.0413641392956!2d77.40789369678957!3d11.258367500000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba907c850ca3605%3A0xeb05b5f7bd087f7c!2sSNA%20Granites%20(Unit-1)!5e0!3m2!1sen!2sus!4v1757067254095!5m2!1sen!2sus"
               width="100%"
               height="450"

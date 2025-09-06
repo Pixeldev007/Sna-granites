@@ -10,7 +10,7 @@ const pulse = keyframes`
 
 const FloatingWhatsApp = () => {
   const phone = '919876543210'; // +91 98765 43210
-  const message = encodeURIComponent('Hello SNA Granites!');
+  const message = encodeURIComponent('Hello SB Stones!');
   const href = `https://wa.me/${phone}?text=${message}`;
 
   return (

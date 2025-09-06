@@ -24,8 +24,8 @@ const Header = () => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2, fontWeight: 'bold' }}>
-        SNA GRANITES
+      <Typography variant="h6" sx={{ my: 2, fontWeight: 900, letterSpacing: 1.5 }}>
+        SB STONES 
       </Typography>
       <List>
         {navItems.map((item) => (
@@ -53,12 +53,18 @@ const Header = () => {
               to="/"
               sx={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}
             >
-              <Box
-                component="img"
-                src="/images/logo.png"
-                alt="SNA Granites"
-                sx={{ height: { xs: 52, sm: 52, md: 62 }, width: 'auto', display: 'block' }}
-              />
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: 900,
+                  letterSpacing: 2,
+                  color: '#03343b',
+                  textTransform: 'uppercase',
+                  lineHeight: 1,
+                }}
+              >
+                SB STONES
+              </Typography>
             </Box>
           </Box>
 

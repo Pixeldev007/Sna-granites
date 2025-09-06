@@ -252,7 +252,7 @@ const Career = () => {
     el.scrollBy({ left: dir * (cardWidth + gapPx) * itemsPerView, behavior: 'smooth' });
   };
   const reviews = [
-    { id: 1, country: 'Ireland', flag: '🇮🇪', text: 'Receiving my second order from SNA Granites was a breeze. Everything from quality to door delivery was exactly what we needed.' },
+    { id: 1, country: 'Ireland', flag: '🇮🇪', text: 'Receiving my second order from SB Stones was a breeze. Everything from quality to door delivery was exactly what we needed.' },
     { id: 2, country: 'United Kingdom', flag: '🇬🇧', text: 'Made ordering stress-free! Prompt responses, clear CAD drawings, and photos before dispatch made the whole process smooth.' },
     { id: 3, country: 'Germany', flag: '🇩🇪', text: 'Very impressed with the first order. Secure packing and excellent quality. Looking forward to many more orders.' },
     { id: 4, country: 'Australia', flag: '🇦🇺', text: 'Top-quality granite and craftsmanship. We are very happy with the service and confident in their ability to meet our needs.' },
@@ -268,7 +268,7 @@ const Career = () => {
             CAREERS
           </Typography>
           <Typography sx={{ color: '#5b6b7b', mt: 1, fontFamily: 'Manrope, sans-serif', fontSize: '16px' }}>
-            SNA Granites offers opportunities to passionate people who want to contribute to our growth.
+            SB Stones offers opportunities to passionate people who want to contribute to our growth.
           </Typography>
         </Container>
       </Box>

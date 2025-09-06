@@ -19,7 +19,7 @@ const Footer = () => {
           {/* Column 1: Brand + Description + Social */}
           <Grid item xs={12} md={3} sx={{ textAlign: { xs: 'left' }, flexBasis: { xs: '100%', md: 'auto' }, maxWidth: { xs: '100%', md: '25%' } }}>
             <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: 1, mb: 2 }}>
-              SNA GRANITES
+              SB Stones
             </Typography>
             <Typography variant="body2" sx={{ 
               opacity: 0.9, 
@@ -28,7 +28,7 @@ const Footer = () => {
               maxWidth: { xs: '100%', md: '280px' },
               wordWrap: 'break-word'
             }}>
-              SNA Granites is your source for quality granite monuments from India. We craft premium monuments and stone products with superior finishing and global delivery.
+              SB Stones is your source for quality granite monuments from India. We craft premium monuments and stone products with superior finishing and global delivery.
             </Typography>
             <MuiLink href="#" underline="none" sx={{ color: '#b38b59', fontWeight: 700, display: 'block', mb: 2 }}>
               Know More
@@ -128,7 +128,7 @@ const Footer = () => {
 
         <Box sx={{ textAlign: { xs: 'left', md: 'center' }, px: { xs: 2, md: 4 } }}>
           <Typography variant="body2" color="inherit" sx={{ fontSize: '0.875rem' }}>
-            Copyright {currentYear} SNA Granites. All rights reserved.
+            Copyright {currentYear} SB Stones. All rights reserved.
           </Typography>
         </Box>
       </Box>

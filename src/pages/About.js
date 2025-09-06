@@ -1,46 +1,183 @@
-import React from 'react';
-import { Box, Container, Grid, Typography, Card, CardContent } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Grid, Typography, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const About = () => {
+  // Reuse the same About section style from Home.js
+  const aboutSlides = ['/images/about-1.png', '/images/about-3.png', '/images/about-4.png'];
+  const [aboutIdx, setAboutIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setAboutIdx(i => (i + 1) % aboutSlides.length), 3000);
+    return () => clearInterval(t);
+  }, [aboutSlides.length]);
+
   return (
     <>
-      {/* Page Header */}
-      <Box
-        sx={{
-          backgroundColor: '#1a365d',
-          color: 'white',
-          py: 6,
-          textAlign: 'center',
-        }}
-      >
-        <Container maxWidth="lg">
-          <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-            About SNA Granites
-          </Typography>
-          <Typography variant="h6" component="p">
-            Crafting excellence in stone since 2005
-          </Typography>
+      {/* Our Legacy - same style as Products New Arrivals header */}
+      <Box id="our-legacy" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#e9f1f4' }}>
+        <Container maxWidth={false} sx={{ maxWidth: 1600, mx: 'auto', width: '100%' }}>
+          <Box sx={{ textAlign: 'center', mb: 5 }}>
+            <Typography variant="h4" component="h2" sx={{ fontWeight: 800, letterSpacing: 2, color: '#16324F' }}>
+              OUR LEGACY
+            </Typography>
+            <Typography sx={{ color: '#5b6b7b', mt: 2 }}>
+              Decades of craftsmanship in granite memorials and monuments.
+            </Typography>
+            <Typography sx={{ color: '#5b6b7b' }}>
+              Three generations upholding quality, integrity, and innovation from quarry to delivery.
+            </Typography>
+          </Box>
         </Container>
       </Box>
 
-      {/* Company Story */}
-      <Box sx={{ py: 8 }}>
-        <Container maxWidth="lg">
-          <Grid container spacing={6} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: '#1a365d' }}>
-                Our Story
-              </Typography>
-              <Typography variant="body1" paragraph>
-                For over 60 years, SB Stones has been a proud, family-owned business in the Jet Black Granite industry. Our Chamrajnagar quarry, located in the heart of South India, is the source of some of the finest, most sought-after Jet Black Granite available globally. With a state-of-the-art manufacturing facility specializing in memorials and monuments, we are fully vertically integrated, managing every stage of production—from quarry extraction to global delivery.
-              </Typography>
-              <Typography variant="body1" paragraph>
-                As a third-generation, family-owned business, we are committed to maintaining the legacy of excellence passed down through the years. Our long-standing reputation, paired with our modern manufacturing machinery and techniques, ensures that we continue to meet and exceed our clients’ expectations worldwide.
-              </Typography>
-              <Typography variant="body1" paragraph>
+      {/* About Section (Standalone Page) */}
+      <Box 
+        id="about-section"
+        sx={{ py: 8, backgroundColor: '#ffffff' }}
+      >
+        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
+          <Grid container spacing={{ xs: 2, md: 6 }} alignItems="flex-start">
+            {/* Left Column - Granite Monument Images */}
+            <Grid item xs={12} md={7}>
+              <Box sx={{ position: 'relative' }}>
+                {/* Main Monument Image crossfade */}
+                <Box
+                  sx={{
+                    width: { xs: 395, sm: 420, md: 700 },
+                    maxWidth: '100%',
+                    height: { xs: 300, sm: 340, md: 400 },
+                    backgroundColor: '#f5f5f5',
+                    overflow: 'hidden',
+                    mb: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '1px solid #e0e0e0',
+                    position: 'relative',
+                    mx: 'auto'
+                  }}
+                >
+                  {aboutSlides.map((src, i) => (
+                    <Box
+                      key={src}
+                      component="img"
+                      src={src}
+                      alt="SB Stones Monument Samples"
+                      sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: i === aboutIdx ? 1 : 0,
+                        transition: 'opacity .35s ease'
+                      }}
+                    />
+                  ))}
+                </Box>
+
+                {/* Decorative underline */}
+                <Box sx={{ display: 'flex', gap: 1.5, mt: 1.5, ml: { md: 6 }, justifyContent: { xs: 'center', md: 'flex-start' } }}>
+                  <Box sx={{ width: 40, height: 4, bgcolor: '#0C8A86', borderRadius: 2 }} />
+                  <Box sx={{ width: 18, height: 4, bgcolor: '#0C8A86', borderRadius: 2 }} />
+                </Box>
+
+                {/* Secondary image */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: -30,
+                    right: -30,
+                    width: 160,
+                    height: 120,
+                    backgroundColor: '#f5f5f5',
+                    overflow: 'hidden',
+                    border: '4px solid white',
+                    boxShadow: '0 6px 20px rgba(0,0,0,0.15)',
+                    display: { xs: 'none', md: 'flex' },
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <img
+                    src="/images/about-2.png"
+                    alt="Granite Processing Equipment"
+                    style={{ width: '500px', height: '100px' }}
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                </Box>
+              </Box>
+            </Grid>
+
+            {/* Right Column - Content */}
+            <Grid item xs={12} md={5}>
+              <Box sx={{ pl: { md: 4 }, maxWidth: 600, width: '100%' }}>
+                <Typography
+                  variant="h3"
+                  component="h1"
+                  sx={{
+                    fontWeight: 'bold',
+                    color: '#1a365d',
+                    mb: 2,
+                    fontSize: { xs: '2rem', md: '2.5rem' },
+                    letterSpacing: '0.5px'
+                  }}
+                >
+                  ABOUT SB Stones
+                </Typography>
+
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: 'bold',
+                    color: '#b38b59',
+                    mb: 3,
+                    fontSize: { xs: '1.2rem', md: '1.4rem' },
+                    letterSpacing: '0.3px'
+                  }}
+                >
+                  50+ YEARS IN GRANITE BUSINESS
+                </Typography>
+
+                <Typography
+                  variant="body1"
+                  sx={{
+                    mb: { xs: 2.5, md: 1.25 },
+                    lineHeight: 1.6,
+                    color: '#555',
+                    fontSize: '1rem',
+                    maxWidth: { md: 500 }
+                  }}
+                >
+                  For over 60 years, SB Stones has been a proud, family-owned business in the Jet Black Granite industry. Our Chamrajnagar quarry, located in the heart of South India, is the source of some of the finest, most sought-after Jet Black Granite available globally. With a state-of-the-art manufacturing facility specializing in memorials and monuments, we are fully vertically integrated, managing every stage of production—from quarry extraction to global delivery.
+                </Typography>
+
+                <Typography
+                  variant="body1"
+                  sx={{
+                    mb: 2.5,
+                    lineHeight: 1.8,
+                    color: '#555',
+                    fontSize: '1rem',
+                    maxWidth: { md: 500 }
+                  }}
+                >
+                  As a third-generation, family-owned business, we are committed to maintaining the legacy of excellence passed down through the years. Our long-standing reputation, paired with our modern manufacturing machinery and techniques, ensures that we continue to meet and exceed our clients’ expectations worldwide.
+                </Typography>
+              </Box>
+            </Grid>
+
+            {/* Full-width paragraphs and list */}
+            <Grid item xs={12}>
+              <Typography
+                variant="body1"
+                sx={{ mb: 1, lineHeight: 1.8, color: '#555', fontSize: '1rem' }}
+              >
                 Located in the heart of Chamrajnagar, our quarry is renowned for its rich, deep, and consistent color of Jet Black Granite. This mineral-rich region has supplied the world with premium granite for decades, and our quarry stands at the forefront of that legacy. Our quarry produces granite known for its density, flawless texture, and vibrant black hue. We are committed to providing a steady supply of high‑quality granite for a variety of applications.
               </Typography>
-              <Typography variant="body1" component="ul" sx={{ pl: 2, mb: 0 }}>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1" component="ul" sx={{ pl: 2, color: '#555', fontSize: '1rem', lineHeight: 1.8, mb: 3 }}>
                 <li>
                   <strong>For Custom Memorials &amp; Headstones:</strong> Our quarry’s granite is ideal for producing stunning and durable memorials, headstones, and commemorative items.
                 </li>
@@ -49,117 +186,265 @@ const About = () => {
                 </li>
               </Typography>
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  backgroundColor: '#f5f5f5',
-                  height: '100%',
-                  minHeight: 300,
-                  borderRadius: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography variant="h5" sx={{ p: 4, textAlign: 'center', color: '#666' }}>
-                  [Company Image Placeholder]
-                </Typography>
+
+            {/* CTA Buttons */}
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: '#b38b59',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    py: 1.5,
+                    px: 4,
+                    borderRadius: 0,
+                    textTransform: 'uppercase',
+                    fontSize: '0.9rem',
+                    '&:hover': {
+                      backgroundColor: '#9a7549',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(179, 139, 89, 0.3)'
+                    },
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  KNOW MORE
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  sx={{
+                    borderColor: '#1a365d',
+                    color: '#1a365d',
+                    fontWeight: 'bold',
+                    py: 1.5,
+                    px: 4,
+                    borderRadius: 0,
+                    textTransform: 'uppercase',
+                    fontSize: '0.9rem',
+                    borderWidth: '2px',
+                    '&:hover': {
+                      backgroundColor: '#1a365d',
+                      color: 'white',
+                      borderWidth: '2px',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(26, 54, 93, 0.3)'
+                    },
+                    transition: 'all 0.3s ease'
+                  }}
+                  component={Link}
+                  to="/contact"
+                >
+                  CONTACT US
+                </Button>
               </Box>
             </Grid>
           </Grid>
         </Container>
       </Box>
 
-      {/* Our Values */}
-      <Box sx={{ py: 8, backgroundColor: '#f5f5f5' }}>
-        <Container maxWidth="lg">
-          <Typography
-            variant="h4"
-            align="center"
-            gutterBottom
-            sx={{ fontWeight: 'bold', color: '#1a365d', mb: 6 }}
-          >
-            Our Core Values
-          </Typography>
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#1a365d' }}>
-                    Quality
-                  </Typography>
-                  <Typography variant="body2">
-                    We never compromise on quality. Every piece of granite undergoes rigorous inspection 
-                    to ensure it meets our exacting standards.
-                  </Typography>
-                </CardContent>
-              </Card>
+      {/* Manufacturing Facility Section (below CTA) */}
+      <Box id="manufacturing-facility" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#e9f1f4' }}>
+        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
+          <Grid container spacing={{ xs: 3, md: 6 }} alignItems="center">
+            {/* Left: Text */}
+            <Grid item xs={12} md={6}>
+              <Box sx={{ maxWidth: 560 }}>
+                <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2, textAlign: { xs: 'center', md: 'left' } }}>
+                  Our State-of-Art Manufacturing Facility
+                </Typography>
+                <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 3, textAlign: { xs: 'center', md: 'left' } }}>
+                  Our manufacturing facility situated in the South of India about 150 miles away from our quarry is where raw material is transformed into custom, high-quality products. Equipped with the latest in cutting-edge technology, we ensure every piece is crafted to perfection – from start to finish.
+                </Typography>
+                <Box component="ul" sx={{ color: '#16324F', pl: 3, m: 0, display: 'grid', gap: 1 }}>
+                  <li>Block Cutting Unit</li>
+                  <li>Edge Cutting Unit</li>
+                  <li>Polishing Unit</li>
+                  <li>Special Works Unit</li>
+                  <li>Packing Unit</li>
+                </Box>
+              </Box>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#1a365d' }}>
-                    Integrity
-                  </Typography>
-                  <Typography variant="body2">
-                    We conduct business with honesty and transparency, building trust with our customers 
-                    through fair dealings and ethical practices.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#1a365d' }}>
-                    Innovation
-                  </Typography>
-                  <Typography variant="body2">
-                    We continuously invest in new technologies and techniques to improve our processes 
-                    and offer cutting-edge solutions to our customers.
-                  </Typography>
-                </CardContent>
-              </Card>
+
+            {/* Right: Images */}
+            <Grid item xs={12} md={6}>
+              <Box sx={{ position: 'relative', width: '100%', maxWidth: 700, ml: { md: 'auto' } }}>
+                {/* Main image placeholder - replace src after upload */}
+                <Box sx={{
+                  height: { xs: 260, sm: 340, md: 400 },
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: 1,
+                  overflow: 'hidden',
+                  border: '1px solid #E5EAF0'
+                }}>
+                  <Box
+                    component="img"
+                    src="/images/AboutPage-3.png"
+                    alt="Manufacturing Facility"
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    onError={(e) => { e.currentTarget.src = '/images/about-1.png'; }}
+                  />
+                </Box>
+
+                {/* Overlay small image - replace src after upload */}
+                <Box sx={{
+                  position: 'absolute',
+                  left: { xs: 12, md: -30 },
+                  bottom: { xs: -20, md: -30 },
+                  width: { xs: 220, sm: 260, md: 300 },
+                  height: { xs: 130, sm: 150, md: 170 },
+                  backgroundColor: '#f5f5f5',
+                  border: '4px solid #fff',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+                  overflow: 'hidden'
+                }}>
+                  <Box
+                    component="img"
+                    src="/images/AboutPage-4.png"
+                    alt="Facility Equipment"
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    onError={(e) => { e.currentTarget.src = '/images/about-2.png'; }}
+                  />
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         </Container>
       </Box>
 
-      {/* Mission Statement */}
-      <Box sx={{ py: 8 }}>
-        <Container maxWidth="lg">
-          <Grid container spacing={6} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  backgroundColor: '#f5f5f5',
-                  height: '100%',
-                  minHeight: 300,
-                  borderRadius: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography variant="h5" sx={{ p: 4, textAlign: 'center', color: '#666' }}>
-                  [Mission Image Placeholder]
-                </Typography>
+      {/* Company Journey / Overview (appended) */}
+      <Box id="about-history" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#ffffff' }}>
+        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
+          <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
+            <Grid item xs={12} md={10} lg={9}>
+              <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
+                MORE ABOUT US 
+              </Typography>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
+                SB Stones started as granite processing equipment manufacturer, we had then invented our own simplistic granite quarry machine which was mounted on to an air compressor. Domain knowledge and proximity to the quarries urged us into the newer areas of granite exports.
+              </Typography>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
+                Our access to its contract quarries and its integrated processing facility has helped it to grow from strength to strength. Our product range is enhanced periodically based on the changes of the trends of its target markets. The products include:
+              </Typography>
+              <Box component="ul" sx={{ color: '#16324F', pl: 3, m: 0, display: 'grid', gap: 1.2 }}>
+                <li>Standard and custom made monuments</li>
+                <li>Cemeteries</li>
+                <li>Fire places</li>
+                <li>Garden furniture</li>
+                <li>Vases</li>
+                <li>Slabs: from rough gang saw cut slabs to table tops, vanity tops, counter tops</li>
               </Box>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mt: 3 }}>
+                We adhere to the best of international management practices and quality norms. Today SB Stones is one of the leading exporters of monuments and slabs to the major countries around the world.
+              </Typography>
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: '#1a365d' }}>
-                Our Mission
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Quality Assurance */}
+      <Box id="quality-assurance" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#e9f1f4' }}>
+        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
+          <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
+            <Grid item xs={12} md={10} lg={9}>
+              <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
+                Quality Assurance
               </Typography>
-              <Typography variant="body1" paragraph>
-                Our mission is to transform spaces with the timeless beauty of natural granite while providing 
-                exceptional value to our customers. We strive to:
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
+                We assure of you of quality through our multi stage inspection right from raw material procurement, storing, sawing, polishing and final full- product inspection.
               </Typography>
-              <Typography variant="body1" component="ul" sx={{ pl: 2 }}>
-                <li>Source the finest quality granite from around the world</li>
-                <li>Deliver innovative design solutions tailored to each client</li>
-                <li>Maintain the highest standards of craftsmanship</li>
-                <li>Build lasting relationships based on trust and reliability</li>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
+                We have an envious track record for our time schedules. The packaging is done adhering to International packaging norms. Quality wood is used for packaging and fumigation is done both to the wood and the containers. The wooden crates are done in such a way that they can be lifted easily.
               </Typography>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
+                All procedures and norms of the business processes are compliant to ISO 9001:2000 standards.
+              </Typography>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Infrastructure (moved below Quarry; hidden placeholder) */}
+      <Box id="infrastructure-hidden" sx={{ display: 'none' }}>
+        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
+          <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
+            <Grid item xs={12} md={10} lg={9}>
+              <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
+                Infrastructure
+              </Typography>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
+                Our success story has always been etched through one factor – Integration. Our knowledge about the industry is immense which we have gained from manufacturing process equipments. This led us to set up an integrated manufacturing setup that would compliment in offering the finest in quality through a comprehensive process.
+              </Typography>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
+                The state of the art facility has the best of machineries from the best brands of the world like Gaspari , & Pelligrini from Italy & Vandeer from Holland along with our own manufactured machines. The facility is capable of delivering about 25 containers of monuments and slabs per month.
+              </Typography>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Quarry */}
+      <Box id="quarry" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#ffffff' }}>
+        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
+          <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
+            <Grid item xs={12} md={10} lg={9}>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
+                QUARRY
+              </Typography>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
+                We have a long lasting resource of quality granites; we have about 5 contracted quarries with resource that is expected to last for decades. These quarries offer us the choicest of colours. They are well proximate and are located well within the easy reach of our facility.
+              </Typography>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Infrastructure (visible, placed below Quarry) */}
+      <Box id="infrastructure" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#ffffff' }}>
+        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
+          <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
+            <Grid item xs={12} md={10} lg={9}>
+              <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
+                Infrastructure
+              </Typography>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
+                Our success story has always been etched through one factor – Integration. Our knowledge about the industry is immense which we have gained from manufacturing process equipments. This led us to set up an integrated manufacturing setup that would compliment in offering the finest in quality through a comprehensive process.
+              </Typography>
+              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
+                The state of the art facility has the best of machineries from the best brands of the world like Gaspari , & Pelligrini from Italy & Vandeer from Holland along with our own manufactured machines. The facility is capable of delivering about 25 containers of monuments and slabs per month.
+              </Typography>
+              {/* Infrastructure gallery: AboutPage-5.png to AboutPage-17.png */}
+              <Box sx={{ mt: 4 }}>
+                <Grid container spacing={2}>
+                  {Array.from({ length: 13 }).map((_, i) => {
+                    const idx = i + 5; // 5..17
+                    const src = `/images/AboutPage-${idx}.png`;
+                    return (
+                      <Grid key={idx} item xs={6} sm={6} md={6}>
+                        <Box sx={{
+                          backgroundColor: '#fff',
+                          border: '1px solid #E5EAF0',
+                          borderRadius: 1,
+                          overflow: 'hidden',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: { xs: 240, sm: 280 } // ensure all cards equal height
+                        }}>
+                          <Box sx={{ height: { xs: 200, sm: 220 }, backgroundColor: '#F8FAFC' }}>
+                            <Box component="img" src={src} alt={`Infrastructure ${idx}`} sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                                 onError={(e) => { e.currentTarget.src = '/images/about-1.png'; }} />
+                          </Box>
+                          <Box sx={{ p: 1.5, textAlign: 'center', height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Typography sx={{ fontWeight: 700, color: '#16324F' }}>Facility View {idx - 4}</Typography>
+                          </Box>
+                        </Box>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </Box>
             </Grid>
           </Grid>
         </Container>
