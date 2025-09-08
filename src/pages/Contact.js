@@ -88,7 +88,11 @@ const Contact = () => {
                 </Typography>
                 <Typography variant="body1" sx={{ color: '#334155', fontFamily: 'Manrope, sans-serif', fontSize: '16px' }}>
                   Talk to us and see how we can work together<br />
-                  <strong>+91 98765 43210</strong>
+                  <strong>+91 98943 12345 </strong>
+                  <br />
+                  <strong>+91 80157 55877 </strong>
+                  <br />
+                  <strong>+1 904 846 4634</strong>
                 </Typography>
               </Box>
               

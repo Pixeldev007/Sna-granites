@@ -44,7 +44,7 @@ const Header = () => {
     <AppBar position="sticky" sx={{ backgroundColor: '#fff', color: '#03343b', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
       <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%' }}>
         <Toolbar sx={{ minHeight: { xs: 64, md: 72 } }}>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box
               component={Link}
               to="/"
@@ -66,47 +66,9 @@ const Header = () => {
             </Box>
           </Box>
 
-          {isMobile ? (
-            <>
-              <IconButton
-                color="inherit"
-                aria-label="open menu"
-                edge="start"
-                onClick={handleMenuOpen}
-                sx={{ ml: 1 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                anchorEl={menuAnchor}
-                open={Boolean(menuAnchor)}
-                onClose={handleMenuClose}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                PaperProps={{ sx: { minWidth: 395, width: 395, borderRadius: 1, mt: 1, boxShadow: '0 8px 18px rgba(0,0,0,0.12)' } }}
-              >
-                {navItems.map((item, idx) => (
-                  <MenuItem
-                    key={item.text}
-                    selected={location.pathname === item.path}
-                    onClick={(e) => { handleMenuClose(); handleHardNavigate(e, item.path); }}
-                    sx={{
-                      fontFamily: 'Manrope, sans-serif',
-                      fontWeight: 700,
-                      letterSpacing: 0.3,
-                      color: '#03343b',
-                      '&:hover': { backgroundColor: '#a89060', color: '#ffffff' },
-                      '&.Mui-selected': { backgroundColor: '#a89060', color: '#ffffff' },
-                      '&.Mui-selected:hover': { backgroundColor: '#a89060', color: '#ffffff' },
-                    }}
-                  >
-                    {item.text}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          ) : (
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          {/* Center navigation (desktop only) — fixed width, no grow */}
+          {!isMobile && (
+            <Box sx={{ display: 'flex', width: '900px', justifyContent: 'center', alignItems: 'center', gap: 2, flexShrink: 0 }}>
               {navItems.map((item) => (
                 <Button
                   key={item.text}
@@ -118,9 +80,9 @@ const Header = () => {
                     color: '#03343b',
                     fontWeight: 700,
                     textTransform: 'uppercase',
-                    letterSpacing: 0.5,
+                    letterSpacing: 0.3,
                     fontSize: '0.9rem',
-                    px: 4,
+                    px: 3,
                     py: 0.5,
                     borderRadius: 0,
                     transition: 'all .2s ease',
@@ -132,13 +94,55 @@ const Header = () => {
                   {item.text}
                 </Button>
               ))}
-              {/* Desktop-only WhatsApp Quick Enquiry */}
+            </Box>
+          )}
+
+          {/* Right actions: mobile menu or desktop WhatsApp */}
+          <Box sx={{ display: 'flex', alignItems: 'center', ml: { xs: 1, md: 2 } }}>
+            {isMobile ? (
+              <>
+                <IconButton
+                  color="inherit"
+                  aria-label="open menu"
+                  edge="start"
+                  onClick={handleMenuOpen}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  anchorEl={menuAnchor}
+                  open={Boolean(menuAnchor)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  PaperProps={{ sx: { minWidth: 395, width: 395, borderRadius: 1, mt: 1, boxShadow: '0 8px 18px rgba(0,0,0,0.12)' } }}
+                >
+                  {navItems.map((item, idx) => (
+                    <MenuItem
+                      key={item.text}
+                      selected={location.pathname === item.path}
+                      onClick={(e) => { handleMenuClose(); handleHardNavigate(e, item.path); }}
+                      sx={{
+                        fontFamily: 'Manrope, sans-serif',
+                        fontWeight: 400,
+                        letterSpacing: 0.2,
+                        color: '#03343b',
+                        '&:hover': { backgroundColor: '#a89060', color: '#ffffff' },
+                        '&.Mui-selected': { backgroundColor: '#a89060', color: '#ffffff' },
+                        '&.Mui-selected:hover': { backgroundColor: '#a89060', color: '#ffffff' },
+                      }}
+                    >
+                      {item.text}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
               <Box
                 sx={{
                   display: { xs: 'none', md: 'flex' },
                   alignItems: 'center',
-                  gap:3,
-                  ml: 2,
+                  gap: 3,
                   fontFamily: 'Manrope, sans-serif',
                 }}
               >
@@ -182,8 +186,8 @@ const Header = () => {
                   </Box>
                 </Box>
               </Box>
-            </Box>
-          )}
+            )}
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

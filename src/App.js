@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button, TextField, FormControl, InputLabel, Select, MenuItem, Avatar } from '@mui/material';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import TopBar from './components/layout/TopBar';
@@ -254,11 +254,14 @@ const Career = () => {
     el.scrollBy({ left: dir * (cardWidth + gapPx) * itemsPerView, behavior: 'smooth' });
   };
   const reviews = [
-    { id: 1, country: 'Ireland', flag: '🇮🇪', text: 'Receiving my second order from SB Stones was a breeze. Everything from quality to door delivery was exactly what we needed.' },
-    { id: 2, country: 'United Kingdom', flag: '🇬🇧', text: 'Made ordering stress-free! Prompt responses, clear CAD drawings, and photos before dispatch made the whole process smooth.' },
-    { id: 3, country: 'Germany', flag: '🇩🇪', text: 'Very impressed with the first order. Secure packing and excellent quality. Looking forward to many more orders.' },
-    { id: 4, country: 'Australia', flag: '🇦🇺', text: 'Top-quality granite and craftsmanship. We are very happy with the service and confident in their ability to meet our needs.' },
-    { id: 5, country: 'United States', flag: '🇺🇸', text: 'Great communication throughout and on-time shipping. The monuments arrived in perfect condition.' },
+    { id: 1, name: 'Ramesh K.', initials: 'RK', text: 'Receiving my second order from SB Stones was a breeze. Everything from quality to door delivery was exactly what we needed.' },
+    { id: 2, name: 'Lakshmi S.', initials: 'LS', text: 'Made ordering stress-free! Prompt responses, clear CAD drawings, and photos before dispatch made the whole process smooth.' },
+    { id: 3, name: 'Arjun P.', initials: 'AP', text: 'Very impressed with the first order. Secure packing and excellent quality. Looking forward to many more orders.' },
+    { id: 4, name: 'Kavya N.', initials: 'KN', text: 'Top-quality granite and craftsmanship. We are very happy with the service and confident in their ability to meet our needs.' },
+    { id: 5, name: 'Pradeep V.', initials: 'PV', text: 'Great communication throughout and on-time shipping. The monuments arrived in perfect condition.' },
+    { id: 6, name: 'Meera R.', initials: 'MR', text: 'Reliable partner for our memorials. Custom designs and finishes were exactly as requested.' },
+    { id: 7, name: 'Santhosh M.', initials: 'SM', text: 'Professional team and excellent quality. Export packing was sturdy and safe.' },
+    { id: 8, name: 'Anitha D.', initials: 'AD', text: 'Smooth experience from quotation to delivery. Highly recommend for consistent quality.' },
   ];
 
   return (
@@ -390,10 +393,10 @@ const Career = () => {
                     {review.text}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <Box sx={{ width: 28, height: 28, borderRadius: '50%', backgroundColor: '#F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>
-                      {review.flag}
-                    </Box>
-                    <Typography sx={{ fontWeight: 700, color: '#16324F' }}>{review.country}</Typography>
+                    <Avatar sx={{ width: 28, height: 28, bgcolor: '#E0E7FF', color: '#1E293B', fontSize: 14, fontWeight: 700 }}>
+                      {review.initials}
+                    </Avatar>
+                    <Typography sx={{ fontWeight: 700, color: '#16324F' }}>{review.name}</Typography>
                   </Box>
                 </Box>
               ))}
