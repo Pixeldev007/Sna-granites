@@ -7,6 +7,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
+// Ensure the browser doesn't restore previous scroll position on navigation/reload
+if ('scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
+
 const theme = createTheme({
   palette: {
     primary: {

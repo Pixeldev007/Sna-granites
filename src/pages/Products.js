@@ -52,10 +52,10 @@ const Products = () => {
             {items.map((d, idx) => (
               <Box key={d.id} sx={{ opacity: 1, transform: 'translateY(0)', transition: 'opacity 0.6s ease-out, transform 0.6s ease-out' }}>
                 <Box sx={{ backgroundColor: '#ffffff', border: '1px solid #E5EAF0', borderRadius: 1, p: 2, height: '100%', display: 'flex', flexDirection: 'column', gap: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.06)', '&:hover': { boxShadow: '0 8px 18px rgba(0,0,0,0.12)' } }}>
-                  <Box sx={{ position: 'relative', height: 220, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', '&:hover img': { transform: 'scale(0.95)' }, '&:hover .zoom-overlay': { opacity: 1 } }}>
-                    <img src={d.image} alt={d.model} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'zoom-in' }} onClick={() => openLightbox(idx)} />
-                    <Box className="zoom-overlay" onClick={() => openLightbox(idx)} sx={{ position: 'absolute', right: 8, top: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 4, border: '1px solid #E5EAF0', background: '#fff', color: '#16324F', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease' }}>
-                      <ZoomIn style={{ fontSize: 20 }} />
+                  <Box sx={{ position: 'relative', height: 220, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer', '&:hover img': { transform: 'scale(0.95)' }, '&:hover .zoom-overlay': { opacity: 1 } }}>
+                    <img src={d.image} alt={d.model} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'pointer' }} onClick={() => openLightbox(idx)} />
+                    <Box className="zoom-overlay" onClick={() => openLightbox(idx)} sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', color: '#fff', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease', boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}>
+                      <ZoomIn style={{ fontSize: 22 }} />
                     </Box>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16324F' }}>
@@ -67,9 +67,9 @@ const Products = () => {
                       const imgUrl = typeof window !== 'undefined' ? `${window.location.origin}${d.image}` : d.image;
                       const subject = `Request a Quote for ${d.model}`;
                       const body = `I am interested to get a quote on this model ${d.model}, Modal Image - ${imgUrl}`;
-                      const mailHref = `mailto:info@astronglobal.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&bcc=`;
+                      const mailHref = `mailto:info@sbstones.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&bcc=`;
                       return (
-                        <a href={mailHref} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#b38b59', textDecoration: 'none', fontWeight: 700, fontSize: 12 }}>
+                        <a href={mailHref} target="_blank" rel="noopener noreferrer" className="quote-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#b38b59', textDecoration: 'none', fontWeight: 700, fontSize: 12 }}>
                           <MailOutline sx={{ fontSize: 16, color: '#b38b59' }} />
                           <span>Get a Quote</span>
                         </a>

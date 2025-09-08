@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -145,12 +145,13 @@ const FAQ = () => {
             ];
 
             return (
-              <Box sx={{ maxWidth: 1450, width: '100%', mx: 'auto', px: 0 }}>
+              <Box sx={{ maxWidth: 1100, width: '100%', mx: 'auto', px: 0 }}>
                 <Box sx={{
                   mt: { xs: 1, md: 4 },
                   display: 'grid',
                   gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(5, 1fr)' },
-                  gap: 0,
+                  columnGap: { xs: '0px', md: 0 },
+                  rowGap: { xs: 0.5, md: 0 },
                   border: '1px solid #D9E1E8',
                   borderRadius: 0,
                   overflow: 'hidden',
@@ -167,11 +168,12 @@ const FAQ = () => {
                         borderRight: { md: (step.id % 5 !== 0) ? '1px solid #D9E1E8' : 'none' },
                         borderTop: { md: step.id > 5 ? '1px solid #D9E1E8' : 'none' },
                         transition: 'background-color 0.2s ease, color 0.2s ease',
-                        '&:hover': { backgroundColor: isTeal ? teal : hoverTeal, color: '#fff', cursor: !isTeal ? 'pointer' : 'default' },
+                        '&:hover': { backgroundColor: hoverTeal, color: '#fff', cursor: 'pointer' },
+                        '&:hover .opf-icon': { transform: 'rotate(360deg) scale(1.06)' },
                       }}>
                         <Typography sx={{ fontWeight: 800, opacity: 0.9 }}>{step.num}</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                          <step.Icon sx={{ fontSize: 34 }} />
+                          <step.Icon className="opf-icon" sx={{ fontSize: 34, transition: 'transform 220ms ease' }} />
                           <Box sx={{ textAlign: 'left' }}>
                             <Typography sx={{ fontSize: 13, fontWeight: 800, letterSpacing: 0.6, lineHeight: 1.1 }}>{step.title}</Typography>
                             {step.subtitle && (
@@ -207,7 +209,7 @@ const Career = () => {
   const handleCareerSubmit = (e) => {
     e.preventDefault();
     // Set your WhatsApp number here in international format without '+'
-    const whatsappNumber = '919840299626'; // edit if needed
+    const whatsappNumber = '919894312345'; // WhatsApp chat destination (same as Contact page)
     const text = `CAREER APPLICATION\n\nName: ${careerForm.name}\nEmail: ${careerForm.email}\nPhone: ${careerForm.phone}\nCity: ${careerForm.city}\n\nMessage:\n${careerForm.message}`;
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
@@ -283,25 +285,22 @@ const Career = () => {
             {/* Top section: 4 fields in 2 columns x 2 rows on desktop, 1 column on mobile */}
             <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, alignItems: 'end' }}>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <FieldLabel required>YOUR NAME</FieldLabel>
                 <TextField fullWidth label="Your Name" name="name" value={careerForm.name} onChange={handleCareerChange} required placeholder="Enter Your Name"
-                  size="small" InputLabelProps={{ shrink: false }} sx={{
+                  size="small" sx={{
                     '& .MuiOutlinedInput-root': { backgroundColor: '#e5edf2', borderRadius: 0 },
                     '& .MuiInputBase-root': { height: 40 }
                   }} />
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <FieldLabel required>EMAIL ID</FieldLabel>
                 <TextField fullWidth label="Email ID" name="email" type="email" value={careerForm.email} onChange={handleCareerChange} required placeholder="Enter Your Email"
-                  size="small" InputLabelProps={{ shrink: false }} sx={{
+                  size="small" sx={{
                     '& .MuiOutlinedInput-root': { backgroundColor: '#e5edf2', borderRadius: 0 },
                     '& .MuiInputBase-root': { height: 40 }
                   }} />
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <FieldLabel required>PHONE NO.</FieldLabel>
                 <TextField fullWidth label="Phone No." name="phone" value={careerForm.phone} onChange={handleCareerChange} required placeholder="Enter Phone No."
-                  size="small" InputLabelProps={{ shrink: false }} sx={{
+                  size="small" sx={{
                     '& .MuiOutlinedInput-root': { backgroundColor: '#e5edf2', borderRadius: 0 },
                     '& .MuiInputBase-root': { height: 40 }
                   }} />
@@ -330,9 +329,8 @@ const Career = () => {
               </Button>
             </Box>
             <Box sx={{ mt: 3, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
-              <FieldLabel>WRITE MESSAGE</FieldLabel>
               <TextField fullWidth multiline minRows={4} label="Write Message" name="message" value={careerForm.message} onChange={handleCareerChange} placeholder="Write Message"
-                InputLabelProps={{ shrink: false }} sx={{ '& .MuiOutlinedInput-root': { backgroundColor: '#e5edf2', borderRadius: 0 } }} />
+                sx={{ '& .MuiOutlinedInput-root': { backgroundColor: '#e5edf2', borderRadius: 0 } }} />
               <Button type="submit" variant="contained" sx={{ mt: 2, backgroundColor: '#a89060', color: '#fff', fontFamily: 'Manrope, sans-serif', fontWeight: 700, textTransform: 'uppercase', borderRadius: 0, px: 3, '&:hover': { backgroundColor: '#967f53' } }}>
                 Send Now
               </Button>
@@ -419,6 +417,7 @@ function App() {
       <TopBar />
       <Header />
       <Box component="main" sx={{ flexGrow: 1 }}>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -435,3 +434,16 @@ function App() {
 }
 
 export default App;
+
+// Scroll to top on route change component
+function ScrollToTop() {
+  const location = useLocation();
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    // Jump to top whenever the path changes
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname]);
+  return null;
+}

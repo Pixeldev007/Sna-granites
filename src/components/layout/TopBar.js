@@ -10,8 +10,8 @@ const TopBar = () => {
         </Box>
         <Box>
           CALL FOR QUICK ENQUIRY&nbsp;
-          <MuiLink href="tel:+919876543210" underline="none" sx={{ color: '#8be0ff', fontWeight: 700 }}>
-            +91 98765 43210
+          <MuiLink href="tel:+919894312345" underline="none" sx={{ color: '#a89060', fontWeight: 700 }}>
+            +91 98943 12345
           </MuiLink>
         </Box>
       </Container>

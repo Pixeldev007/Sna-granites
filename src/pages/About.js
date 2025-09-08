@@ -11,6 +11,36 @@ const About = () => {
     return () => clearInterval(t);
   }, [aboutSlides.length]);
 
+  // Titles/subtitles for the Infrastructure gallery (AboutPage-5 .. AboutPage-16)
+  const infraTitles = [
+    'Turning',
+    'Edge Cutting',
+    'Polishing',
+    'Auto Polishing – Part 1',
+    'Auto Polishing – Part 2',
+    'Container Stuffing',
+    'Daewoo Forklifts',
+    'Block Sawing unit',
+    'Factory Unit - I',
+    'Factory Unit - II',
+    'Special Wirecut Machine',
+    'Cutting Overview'
+  ];
+  const infraSubtitles = [
+    'Shaping and refinement',
+    'Precision cutting and sizing',
+    'Surface finishing',
+    'High-throughput polishing',
+    'Mirror-finish sequencing',
+    'Thickness calibration',
+    'Custom fabrication',
+    'Crating and protection',
+    'Dispatch and logistics',
+    'Storage and staging',
+    'Site overview',
+    'Close-up process'
+  ];
+
   return (
     <>
       {/* Our Legacy - same style as Products New Arrivals header */}
@@ -192,6 +222,8 @@ const About = () => {
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button
                   variant="contained"
+                  component={Link}
+                  to="/contact"
                   sx={{
                     backgroundColor: '#b38b59',
                     color: 'white',
@@ -211,33 +243,6 @@ const About = () => {
                 >
                   KNOW MORE
                 </Button>
-
-                <Button
-                  variant="outlined"
-                  sx={{
-                    borderColor: '#1a365d',
-                    color: '#1a365d',
-                    fontWeight: 'bold',
-                    py: 1.5,
-                    px: 4,
-                    borderRadius: 0,
-                    textTransform: 'uppercase',
-                    fontSize: '0.9rem',
-                    borderWidth: '2px',
-                    '&:hover': {
-                      backgroundColor: '#1a365d',
-                      color: 'white',
-                      borderWidth: '2px',
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 4px 12px rgba(26, 54, 93, 0.3)'
-                    },
-                    transition: 'all 0.3s ease'
-                  }}
-                  component={Link}
-                  to="/contact"
-                >
-                  CONTACT US
-                </Button>
               </Box>
             </Grid>
           </Grid>
@@ -249,7 +254,7 @@ const About = () => {
         <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
           <Grid container spacing={{ xs: 3, md: 6 }} alignItems="center">
             {/* Left: Text */}
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={12}>
               <Box sx={{ maxWidth: 560 }}>
                 <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2, textAlign: { xs: 'center', md: 'left' } }}>
                   Our State-of-Art Manufacturing Facility
@@ -268,8 +273,8 @@ const About = () => {
             </Grid>
 
             {/* Right: Images */}
-            <Grid item xs={12} md={6}>
-              <Box sx={{ position: 'relative', width: '100%', maxWidth: 700, ml: { md: 'auto' } }}>
+            <Grid item xs={12} md={12}>
+              <Box sx={{ position: 'relative', width: '100%', maxWidth: 700, mx: { xs: 'auto', md: 'auto' } }}>
                 {/* Main image placeholder - replace src after upload */}
                 <Box sx={{
                   height: { xs: 260, sm: 340, md: 400 },
@@ -290,8 +295,8 @@ const About = () => {
                 {/* Overlay small image - replace src after upload */}
                 <Box sx={{
                   position: 'absolute',
-                  left: { xs: 12, md: -30 },
-                  bottom: { xs: -20, md: -30 },
+                  left: { xs: 12, md: 12 },
+                  bottom: { xs: -20, md: -20 },
                   width: { xs: 220, sm: 260, md: 300 },
                   height: { xs: 130, sm: 150, md: 170 },
                   backgroundColor: '#f5f5f5',
@@ -343,25 +348,45 @@ const About = () => {
         </Container>
       </Box>
 
-      {/* Quality Assurance */}
-      <Box id="quality-assurance" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#e9f1f4' }}>
+      {/* Two centered cards (no table) for Quality Assurance and Quarry */}
+      <Box sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#ffffff' }}>
         <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
-          <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
-            <Grid item xs={12} md={10} lg={9}>
-              <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
-                Quality Assurance
-              </Typography>
-              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
-                We assure of you of quality through our multi stage inspection right from raw material procurement, storing, sawing, polishing and final full- product inspection.
-              </Typography>
-              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
-                We have an envious track record for our time schedules. The packaging is done adhering to International packaging norms. Quality wood is used for packaging and fumigation is done both to the wood and the containers. The wooden crates are done in such a way that they can be lifted easily.
-              </Typography>
-              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
-                All procedures and norms of the business processes are compliant to ISO 9001:2000 standards.
-              </Typography>
-            </Grid>
-          </Grid>
+          <Box sx={{ maxWidth: 1600, mx: 'auto', backgroundColor: '#e9f1f4', border: '1px solid #E5EAF0', borderRadius: 1, p: { xs: 2, md: 3 } }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+              <Box sx={{ backgroundColor: '#ffffff', border: '1px solid #E5EAF0', borderRadius: 1, p: { xs: 3, md: 4 }, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+                <Box sx={{ maxWidth: 400, width: '100%', mx: 'auto' }}>
+                  <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
+                    Quality Assurance
+                  </Typography>
+                  <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
+                    We assure of you of quality through our multi stage inspection right from raw material procurement, storing, sawing, polishing and final full- product inspection.
+                  </Typography>
+                  <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mb: 2 }}>
+                    We have an envious track record for our time schedules. The packaging is done adhering to International packaging norms. Quality wood is used for packaging and fumigation is done both to the wood and the containers. The wooden crates are done in such a way that they can be lifted easily.
+                  </Typography>
+                  <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
+                    All procedures and norms of the business processes are compliant to ISO 9001:2000 standards.
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={{ backgroundColor: '#ffffff', border: '1px solid #E5EAF0', borderRadius: 1, p: { xs: 3, md: 4 }, display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+                <Box sx={{ maxWidth: 400, width: '100%', mx: 'auto' }}>
+                  <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
+                    QUARRY
+                  </Typography>
+                  <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
+                    We have a long lasting resource of quality granites; we have about 5 contracted quarries with resource that is expected to last for decades. These quarries offer us the choicest of colours. They are well proximate and are located well within the easy reach of our facility.
+                  </Typography>
+                  <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mt: 2 }}>
+                    Our quarrying operations follow stringent environmental and safety standards. From selective extraction to responsible land reclamation, we ensure minimal impact while maintaining consistent supply and quality.
+                  </Typography>
+                  <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8, mt: 2 }}>
+                    With efficient logistics planning and on‑site quality checks, blocks are transported promptly to our manufacturing facility, enabling shorter lead times and reliable delivery schedules.
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
@@ -384,27 +409,11 @@ const About = () => {
         </Container>
       </Box>
 
-      {/* Quarry */}
-      <Box id="quarry" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#ffffff' }}>
-        <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
-          <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
-            <Grid item xs={12} md={10} lg={9}>
-              <Typography variant="h5" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
-                QUARRY
-              </Typography>
-              <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
-                We have a long lasting resource of quality granites; we have about 5 contracted quarries with resource that is expected to last for decades. These quarries offer us the choicest of colours. They are well proximate and are located well within the easy reach of our facility.
-              </Typography>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-
       {/* Infrastructure (visible, placed below Quarry) */}
       <Box id="infrastructure" sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#ffffff' }}>
         <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%', px: { xs: 2, md: 0 } }}>
           <Grid container spacing={{ xs: 2, md: 4 }} alignItems="flex-start">
-            <Grid item xs={12} md={10} lg={9}>
+            <Grid item xs={12} md={12} lg={12}>
               <Typography variant="h4" sx={{ fontWeight: 700, color: '#16324F', mb: 2 }}>
                 Infrastructure
               </Typography>
@@ -414,36 +423,55 @@ const About = () => {
               <Typography sx={{ color: '#5b6b7b', lineHeight: 1.8 }}>
                 The state of the art facility has the best of machineries from the best brands of the world like Gaspari , & Pelligrini from Italy & Vandeer from Holland along with our own manufactured machines. The facility is capable of delivering about 25 containers of monuments and slabs per month.
               </Typography>
-              {/* Infrastructure gallery: AboutPage-5.png to AboutPage-17.png */}
               <Box sx={{ mt: 4 }}>
-                <Grid container spacing={2}>
-                  {Array.from({ length: 13 }).map((_, i) => {
-                    const idx = i + 5; // 5..17
+                <Grid container spacing={8} alignItems="center">
+                  {Array.from({ length: 12 }).map((_, i) => {
+                    const idx = i + 5; // 5..16
                     const src = `/images/AboutPage-${idx}.png`;
                     return (
-                      <Grid key={idx} item xs={6} sm={6} md={6}>
+                      <Grid key={idx} item xs={12} sm={12} md={6} sx={{ display: 'flex' }}>
                         <Box sx={{
                           backgroundColor: '#fff',
                           border: '1px solid #E5EAF0',
                           borderRadius: 1,
                           overflow: 'hidden',
-                          boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+                          boxShadow: '0 6px 16px rgba(0,0,0,0.08)',
                           display: 'flex',
                           flexDirection: 'column',
-                          height: { xs: 240, sm: 280 } // ensure all cards equal height
+                          height: '100%'
                         }}>
-                          <Box sx={{ height: { xs: 200, sm: 220 }, backgroundColor: '#F8FAFC' }}>
-                            <Box component="img" src={src} alt={`Infrastructure ${idx}`} sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                          {/* Responsive 4:5 image wrapper for equal sizes across breakpoints */}
+                          <Box sx={{
+                            width: { xs: 400, sm: 400, md: 400 },
+                            height: { xs: 400, sm: 400, md: 250 },
+                            mx: 'auto',
+                            backgroundColor: '#F8FAFC',
+                            position: 'relative'
+                          }}>
+                            <Box component="img" src={src} alt={`Infrastructure ${idx}`} sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                  onError={(e) => { e.currentTarget.src = '/images/about-1.png'; }} />
                           </Box>
-                          <Box sx={{ p: 1.5, textAlign: 'center', height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Typography sx={{ fontWeight: 700, color: '#16324F' }}>Facility View {idx - 4}</Typography>
+                          {/* Fixed-height content area with title + subtitle */}
+                          <Box sx={{ p: 2, textAlign: 'center', height: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0.5, borderTop: '1px solid #E5EAF0' }}>
+                            <Typography noWrap sx={{ fontWeight: 800, color: '#16324F', maxWidth: '100%' }}>{infraTitles[i] || `Facility View ${idx - 4}`}</Typography>
+                            <Typography noWrap sx={{ color: '#5b6b7b', fontSize: '0.9rem', maxWidth: '100%' }}>{infraSubtitles[i] || 'Infrastructure'}</Typography>
                           </Box>
                         </Box>
                       </Grid>
                     );
                   })}
                 </Grid>
+              </Box>
+              {/* Centered banner image below the 12-card grid */}
+              <Box sx={{ mt: 4, textAlign: 'center' }}>
+                <Box
+                  component="img"
+                  src="/images/AboutPage-17.png"
+                  alt="Slab Factory"
+                  sx={{ width: { xs: '100%', md: 900 }, maxWidth: '100%', height: { xs: '200px', md: 300 }, display: 'block', mx: 'auto', borderRadius: 0, boxShadow: '0 6px 16px rgba(0,0,0,0.08)' }}
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+                <Typography variant="h6" sx={{ mt: 1.5, fontWeight: 800, color: '#16324F' }}>Slab Factory</Typography>
               </Box>
             </Grid>
           </Grid>

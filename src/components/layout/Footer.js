@@ -30,7 +30,7 @@ const Footer = () => {
             }}>
               SB Stones is your source for quality granite monuments from India. We craft premium monuments and stone products with superior finishing and global delivery.
             </Typography>
-            <MuiLink href="#" underline="none" sx={{ color: '#b38b59', fontWeight: 700, display: 'block', mb: 2 }}>
+            <MuiLink href="/about" underline="none" sx={{ color: '#b38b59', fontWeight: 700, display: 'block', mb: 2 }}>
               Know More
             </MuiLink>
             <Stack direction="row" spacing={1} sx={{ justifyContent: { xs: 'flex-start' }, alignItems: { xs: 'flex-start' } }}>
@@ -48,10 +48,11 @@ const Footer = () => {
             </Typography>
             <Stack spacing={1}>
               <MuiLink href="/" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>Home</MuiLink>
-              <MuiLink href="/products" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>Products</MuiLink>
-              <MuiLink href="/gallery" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>Gallery</MuiLink>
               <MuiLink href="/about" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>About</MuiLink>
-              <MuiLink href="/contact" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>Contact Us</MuiLink>
+              <MuiLink href="/products" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>Products</MuiLink>
+              <MuiLink href="/faq" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>FAQ</MuiLink>
+              <MuiLink href="/career" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>Career</MuiLink>
+              <MuiLink href="/contact" color="inherit" underline="hover" sx={{ fontSize: '0.875rem' }}>Contact</MuiLink>
             </Stack>
           </Grid>
 
@@ -71,7 +72,11 @@ const Footer = () => {
               </Stack>
               <Stack direction="row" spacing={1} alignItems={{ xs: 'flex-start', md: 'center' }}>
                 <Phone sx={{ fontSize: '1.1rem' }} />
-                <Typography variant="body2" sx={{ fontSize: '0.875rem' }}>+91 98765 43210</Typography>
+                <Box>
+                  <MuiLink href="tel:+919894312345" color="inherit" underline="hover" sx={{ display: 'block', fontSize: '0.875rem' }}>+91 98943 12345</MuiLink>
+                  <MuiLink href="tel:+19048464634" color="inherit" underline="hover" sx={{ display: 'block', fontSize: '0.875rem' }}>+1 904 846 4634</MuiLink>
+                  <MuiLink href="tel:+918015755877" color="inherit" underline="hover" sx={{ display: 'block', fontSize: '0.875rem' }}>+91 80157 55877</MuiLink>
+                </Box>
               </Stack>
               <Stack direction="row" spacing={1} alignItems={{ xs: 'flex-start', md: 'center' }}>
                 <Email sx={{ fontSize: '1.1rem' }} />
@@ -86,15 +91,15 @@ const Footer = () => {
               CALL FOR QUICK ENQUIRY
             </Typography>
             <Typography variant="h6" sx={{ fontWeight: 800, mb: 2, color: '#b38b59' }}>
-              +91 98765 43210
+              <MuiLink href="tel:+919894312345" underline="none" sx={{ color: 'inherit' }}>+91 98943 12345</MuiLink>
             </Typography>
             <Stack spacing={1.5} sx={{ mb: 3 }}>
-              <CTAButton component="a" href="#sample" sx={{ width: '100%', py: 1 }}>
+              <CTAButton component="a" href="mailto:arun@sbstones.com" sx={{ width: '100%', py: 1 }}>
                 GET A SAMPLE
               </CTAButton>
               <CTAButton 
                 component="a" 
-                href="#consultation" 
+                href="https://wa.me/919894312345" 
                 sx={{ 
                   width: '100%', 
                   py: 1,
@@ -114,9 +119,84 @@ const Footer = () => {
               ASSOCIATION
             </Typography>
             <Stack direction="row" spacing={1.5} alignItems={{ xs: 'flex-start', md: 'center' }} justifyContent={{ xs: 'flex-start', md: 'flex-start' }}>
-              <Box sx={{ width: 40, height: 40, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: '50%' }} />
-              <Box sx={{ width: 40, height: 40, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: '50%' }} />
-              <Box sx={{ width: 40, height: 40, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: '50%' }} />
+              <Box
+                component="img"
+                src="/images/association-1.png"
+                alt="Association 1"
+                sx={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: '20%',
+                  objectFit: 'contain',
+                  bgcolor: 'white',
+                  cursor: 'pointer',
+                  boxShadow: '0 0 0 rgba(0,0,0,0)',
+                  transition: 'box-shadow 200ms ease',
+                  '&:hover': {
+                    animation: 'footerBounce 700ms ease',
+                    boxShadow: '0 6px 14px rgba(0,0,0,0.25)'
+                  },
+                  '@keyframes footerBounce': {
+                    '0%': { transform: 'translateY(0)' },
+                    '30%': { transform: 'translateY(-10px)' },
+                    '60%': { transform: 'translateY(0)' },
+                    '80%': { transform: 'translateY(-6px)' },
+                    '100%': { transform: 'translateY(0)' }
+                  }
+                }}
+              />
+              <Box
+                component="img"
+                src="/images/association-2.png"
+                alt="Association 2"
+                sx={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: '20%',
+                  objectFit: 'contain',
+                  bgcolor: 'white',
+                  cursor: 'pointer',
+                  boxShadow: '0 0 0 rgba(0,0,0,0)',
+                  transition: 'box-shadow 200ms ease',
+                  '&:hover': {
+                    animation: 'footerBounce 700ms ease',
+                    boxShadow: '0 6px 14px rgba(0,0,0,0.25)'
+                  },
+                  '@keyframes footerBounce': {
+                    '0%': { transform: 'translateY(0)' },
+                    '30%': { transform: 'translateY(-10px)' },
+                    '60%': { transform: 'translateY(0)' },
+                    '80%': { transform: 'translateY(-6px)' },
+                    '100%': { transform: 'translateY(0)' }
+                  }
+                }}
+              />
+              <Box
+                component="img"
+                src="/images/association-3.png"
+                alt="Association 3"
+                sx={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: '20%',
+                  objectFit: 'cover',
+                  bgcolor: 'white',
+                  cursor: 'pointer',
+                  boxShadow: '0 0 0 rgba(0,0,0,0)',
+                  transition: 'box-shadow 200ms ease',
+                  '&:hover': {
+                    animation: 'footerBounce 700ms ease',
+                    boxShadow: '0 6px 14px rgba(0,0,0,0.25)'
+                  },
+                  '@keyframes footerBounce': {
+                    '0%': { transform: 'translateY(0)' },
+                    '30%': { transform: 'translateY(-10px)' },
+                    '60%': { transform: 'translateY(0)' },
+                    '80%': { transform: 'translateY(-6px)' },
+                    '100%': { transform: 'translateY(0)' }
+                  }
+                }}
+              />
             </Stack>
           </Grid>
         </Grid>
@@ -129,6 +209,12 @@ const Footer = () => {
         <Box sx={{ textAlign: { xs: 'left', md: 'center' }, px: { xs: 2, md: 4 } }}>
           <Typography variant="body2" color="inherit" sx={{ fontSize: '0.875rem' }}>
             Copyright {currentYear} SB Stones. All rights reserved.
+          </Typography>
+          <Typography variant="body2" color="inherit" sx={{ fontSize: '0.875rem', mt: 0.5 }}>
+            Designed by{' '}
+            <MuiLink href="https://pixelperfect.co.in/" target="_blank" rel="noopener noreferrer" underline="hover" sx={{ color: '#b38b59', fontWeight: 700 }}>
+              Pixel Perfect Software Solutions
+            </MuiLink>
           </Typography>
         </Box>
       </Box>

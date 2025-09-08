@@ -251,3 +251,36 @@
   background-color: #b38b59 !important; /* gold */
   color: #ffffff !important;
 }
+
+/* Mobile: hide 'Get a Quote' text, show only icon */
+@media (max-width: 600px) {
+  .quote-link span {
+    display: none !important;
+  }
+  .quote-link {
+    gap: 0 !important;
+  }
+}
+
+/* Mobile: constrain Contact form fields to 370px and center */
+@media (max-width: 600px) {
+  .contact-form .MuiGrid-item {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .contact-form .MuiFormControl-root,
+  .contact-form .MuiTextField-root,
+  .contact-form .MuiInputBase-root {
+    width: 370px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box;
+  }
+  .contact-form .MuiButton-root {
+    width: 370px !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+}

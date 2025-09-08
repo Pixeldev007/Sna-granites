@@ -24,6 +24,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from '@mui/icons-material';
+import { Avatar } from '@mui/material';
 
 const Home = () => {
   // Hero slides (place images in public/images as slide-1.png, slide-2.png)
@@ -367,6 +368,8 @@ const Home = () => {
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button
                   variant="contained"
+                  component={Link}
+                  to="/about"
                   sx={{
                     backgroundColor: '#b38b59',
                     color: 'white',
@@ -462,7 +465,7 @@ const Home = () => {
             const hoverTeal = '#246f6b';
 
             return (
-              <Box sx={{ maxWidth: 1450, width: '100%', mx: 'auto', px: 0 }}>
+              <Box sx={{ maxWidth: 1350, width: '100%', mx: 'auto', px: 0 }}>
                 <Box
                   sx={{
                     mt: { xs: 1, md: 4 },
@@ -472,7 +475,8 @@ const Home = () => {
                       sm: 'repeat(2, 1fr)',
                       md: 'repeat(6, 1fr)',
                     },
-                    gap: 0, // continuous strip; separators via item borders
+                    columnGap: { xs: '0px', md: 0 },
+                    rowGap: 0.5,
                     border: '1px solid #D9E1E8',
                     borderRadius: 0,
                     overflow: 'hidden',
@@ -499,15 +503,23 @@ const Home = () => {
                         boxShadow: 'none',
                         transition: 'background-color 0.2s ease, color 0.2s ease, opacity 0.6s ease-out, transform 0.6s ease-out',
                         '&:hover': {
-                          backgroundColor: (f.id === 2 || f.id === 4 || f.id === 6) ? hoverTeal : (f.highlight ? teal : light),
-                          color: (f.id === 2 || f.id === 4 || f.id === 6) ? '#fff' : (f.highlight ? '#fff' : dark),
-                          cursor: (f.id === 2 || f.id === 4 || f.id === 6) ? 'pointer' : 'default',
+                          // All boxes (1 to 6) change to hoverTeal and white text on hover
+                          backgroundColor: hoverTeal,
+                          color: '#fff',
+                          cursor: 'pointer',
+                          '& .feature-icon': {
+                            // Reduce motion on mobile, full motion on desktop
+                            transform: { xs: 'translateX(100px)', sm: 'translateX(80px)', md: 'translateX(150px)' }
+                          }
+                        },
+                        '&:active .feature-icon': {
+                          transform: { xs: 'translateX(100px)', sm: 'translateX(80px)', md: 'translateX(150px)' }
                         },
                         opacity: animatedElements[`feature-${f.id}`] ? 1 : 0,
                         transform: animatedElements[`feature-${f.id}`] ? 'translateY(0)' : 'translateY(20px)'
                       }}
                     >
-                      <f.Icon sx={{ fontSize: 34 }} />
+                      <f.Icon className="feature-icon" sx={{ fontSize: 34, transition: { xs: 'transform 160ms ease', md: 'transform 220ms ease' }, transformOrigin: 'center', willChange: 'transform' }} />
                       <Box sx={{ textAlign: 'left' }}>
                         <Typography sx={{ fontSize: 13, fontWeight: 800, letterSpacing: 0.6, lineHeight: 1.1 }}>
                           {f.titleTop}
@@ -582,13 +594,13 @@ const Home = () => {
                         '&:hover': { boxShadow: '0 8px 18px rgba(0,0,0,0.12)' },
                       }}
                     >
-                      <Box sx={{ position: 'relative', height: 200, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
+                      <Box sx={{ position: 'relative', height: 200, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer',
                                  '&:hover img': { transform: 'scale(0.95)' },
                                  '&:hover .zoom-overlay': { opacity: 1 } }}>
                         <img
                           src={d.image}
                           alt={d.model}
-                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'zoom-in' }}
+                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'pointer' }}
                           onError={(e) => { e.currentTarget.src = '/images/about-1.png'; }}
                           onClick={() => openLightbox(idx)}
                         />
@@ -596,10 +608,10 @@ const Home = () => {
                         <Box
                           className="zoom-overlay"
                           onClick={() => openLightbox(idx)}
-                          sx={{ position: 'absolute', right: 8, top: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 4, border: '1px solid #E5EAF0', background: '#fff', color: '#16324F', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease' }}
+                          sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', color: '#fff', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease', boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
                           aria-label={`Zoom ${d.model}`}
                         >
-                          <ZoomIn style={{ fontSize: 20 }} />
+                          <ZoomIn style={{ fontSize: 22 }} />
                         </Box>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16324F' }}>
@@ -612,9 +624,9 @@ const Home = () => {
                           const imgUrl = typeof window !== 'undefined' ? `${window.location.origin}${d.image}` : d.image;
                           const subject = `Request a Quote for ${d.model}`;
                           const body = `I am interested to get a quote on this model ${d.model}, Modal Image - ${imgUrl}`;
-                          const mailHref = `mailto:info@astronglobal.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&bcc=`;
+                          const mailHref = `mailto:info@sbstones.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&bcc=`;
                           return (
-                            <a href={mailHref} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#b38b59', textDecoration: 'none', fontWeight: 700, fontSize: 12 }}>
+                            <a href={mailHref} target="_blank" rel="noopener noreferrer" className="quote-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#b38b59', textDecoration: 'none', fontWeight: 700, fontSize: 12 }}>
                               <MailOutline sx={{ fontSize: 16, color: '#b38b59' }} />
                               <span>Get a Quote</span>
                             </a>
@@ -752,12 +764,13 @@ const Home = () => {
           </Box>
 
           {/* 10-step grid: 2 rows x 5 columns, 1450px centered */}
-          <Box sx={{ maxWidth: 1450, width: '100%', mx: 'auto' }}>
+          <Box sx={{ maxWidth: 1100, width: '100%', mx: 'auto' }}>
             <Box
               sx={{
                 display: 'grid',
                 gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(5, 1fr)' },
-                gap: 0,
+                columnGap: { xs: '0px', md: 0 },
+                rowGap: 1,
                 border: '1px solid #D9E1E8',
                 overflow: 'hidden',
               }}
@@ -777,6 +790,7 @@ const Home = () => {
                 const teal = '#0C8A86';
                 const light = '#E7EDF2';
                 const dark = '#16324F';
+                const hoverTeal = '#246f6b';
                 const isTeal = step.id % 2 === 1; // 1,3,5,7,9 teal like screenshot
                 return (
                   <Box
@@ -793,13 +807,15 @@ const Home = () => {
                       px: 3,
                       borderRight: { md: step.id % 5 !== 0 ? '1px solid #D9E1E8' : 'none' },
                       borderTop: { md: step.id > 5 ? '1px solid #D9E1E8' : 'none' },
+                      '&:hover': { backgroundColor: hoverTeal, color: '#fff', cursor: 'pointer' },
+                      '&:hover .opf-icon': { transform: 'rotate(360deg) scale(1.06)' },
                     }}
                   >
                     <Typography sx={{ fontWeight: 800, opacity: 0.9 }}>
                       {step.num}
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <step.Icon sx={{ fontSize: 34 }} />
+                      <step.Icon className="opf-icon" sx={{ fontSize: 34, transition: 'transform 220ms ease' }} />
                       <Box sx={{ textAlign: 'left' }}>
                         <Typography sx={{ fontSize: 13, fontWeight: 800, letterSpacing: 0.6, lineHeight: 1.1 }}>
                           {step.title}
@@ -886,16 +902,18 @@ const Home = () => {
                         border: '1px solid #E5EAF0',
                       }}
                     >
-                      <Box sx={{ position: 'relative', height: 220, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', '&:hover img': { transform: 'scale(0.95)' }, '&:hover .zoom-overlay': { opacity: 1 } }}>
+                      <Box sx={{ position: 'relative', height: 220, backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer',
+                                 '&:hover img': { transform: 'scale(0.95)' },
+                                 '&:hover .zoom-overlay': { opacity: 1 } }}>
                         <img
                           src={d.image}
                           alt={d.model}
-                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'zoom-in' }}
+                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', transition: 'transform 0.3s ease', cursor: 'pointer' }}
                           onError={(e) => { e.currentTarget.src = '/images/about-1.png'; }}
                           onClick={() => openLightbox(idx)}
                         />
-                        <Box className="zoom-overlay" onClick={() => openLightbox(idx)} sx={{ position: 'absolute', right: 8, top: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 4, border: '1px solid #E5EAF0', background: '#fff', color: '#16324F', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease' }}>
-                          <ZoomIn style={{ fontSize: 20 }} />
+                        <Box className="zoom-overlay" onClick={() => openLightbox(idx)} sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', color: '#fff', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s ease' }}>
+                          <ZoomIn style={{ fontSize: 22 }} />
                         </Box>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16324F', mt: 1.5 }}>
@@ -907,9 +925,9 @@ const Home = () => {
                           const imgUrl = typeof window !== 'undefined' ? `${window.location.origin}${d.image}` : d.image;
                           const subject = `Request a Quote for ${d.model}`;
                           const body = `I am interested to get a quote on this model ${d.model}, Modal Image - ${imgUrl}`;
-                          const mailHref = `mailto:info@astronglobal.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&bcc=`;
+                          const mailHref = `mailto:info@sbstones.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&bcc=`;
                           return (
-                            <a href={mailHref} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#b38b59', textDecoration: 'none', fontWeight: 700, fontSize: 12 }}>
+                            <a href={mailHref} target="_blank" rel="noopener noreferrer" className="quote-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#b38b59', textDecoration: 'none', fontWeight: 700, fontSize: 12 }}>
                               <MailOutline sx={{ fontSize: 16, color: '#b38b59' }} />
                               <span>Get a Quote</span>
                             </a>
@@ -957,14 +975,14 @@ const Home = () => {
 
           {(() => {
             const reviews = [
-              { id: 1, country: 'Ireland', flag: '🇮🇪', text: 'Receiving my second order from SB Stones was a breeze. Everything from quality to door delivery was exactly what we needed.' },
-              { id: 2, country: 'United Kingdom', flag: '🇬🇧', text: 'Made ordering stress-free! Prompt responses, clear CAD drawings, and photos before dispatch made the whole process smooth.' },
-              { id: 3, country: 'Germany', flag: '🇩🇪', text: 'Very impressed with the first order. Secure packing and excellent quality. Looking forward to many more orders.' },
-              { id: 4, country: 'Australia', flag: '🇦🇺', text: 'Top-quality granite and craftsmanship. We are very happy with the service and confident in their ability to meet our needs.' },
-              { id: 5, country: 'United States', flag: '🇺🇸', text: 'Great communication throughout and on-time shipping. The monuments arrived in perfect condition.' },
-              { id: 6, country: 'Canada', flag: '🇨🇦', text: 'Reliable partner for our memorials. Custom designs and finishes were exactly as requested.' },
-              { id: 7, country: 'France', flag: '🇫🇷', text: 'Professional team and excellent quality. Export packing was sturdy and safe.' },
-              { id: 8, country: 'Netherlands', flag: '🇳🇱', text: 'Smooth experience from quotation to delivery. Highly recommend for consistent quality.' },
+              { id: 1, name: 'Ramesh K.', initials: 'RK', text: 'Receiving my second order from SB Stones was a breeze. Everything from quality to door delivery was exactly what we needed.' },
+              { id: 2, name: 'Lakshmi S.', initials: 'LS', text: 'Made ordering stress-free! Prompt responses, clear CAD drawings, and photos before dispatch made the whole process smooth.' },
+              { id: 3, name: 'Arjun P.', initials: 'AP', text: 'Very impressed with the first order. Secure packing and excellent quality. Looking forward to many more orders.' },
+              { id: 4, name: 'Kavya N.', initials: 'KN', text: 'Top-quality granite and craftsmanship. We are very happy with the service and confident in their ability to meet our needs.' },
+              { id: 5, name: 'Pradeep V.', initials: 'PV', text: 'Great communication throughout and on-time shipping. The monuments arrived in perfect condition.' },
+              { id: 6, name: 'Meera R.', initials: 'MR', text: 'Reliable partner for our memorials. Custom designs and finishes were exactly as requested.' },
+              { id: 7, name: 'Santhosh M.', initials: 'SM', text: 'Professional team and excellent quality. Export packing was sturdy and safe.' },
+              { id: 8, name: 'Anitha D.', initials: 'AD', text: 'Smooth experience from quotation to delivery. Highly recommend for consistent quality.' },
             ];
 
             return (
@@ -1009,10 +1027,10 @@ const Home = () => {
                         {review.text}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <Box sx={{ width: 28, height: 28, borderRadius: '50%', backgroundColor: '#F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>
-                          {review.flag}
-                        </Box>
-                        <Typography sx={{ fontWeight: 700, color: '#16324F' }}>{review.country}</Typography>
+                        <Avatar sx={{ width: 28, height: 28, bgcolor: '#E0E7FF', color: '#1E293B', fontSize: 14, fontWeight: 700 }}>
+                          {review.initials}
+                        </Avatar>
+                        <Typography sx={{ fontWeight: 700, color: '#16324F' }}>{review.name}</Typography>
                       </Box>
                     </Box>
                   ))}

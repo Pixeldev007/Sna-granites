@@ -65,7 +65,7 @@ const Contact = () => {
       
       {/* Contact Information and Form */}
       <Box sx={{ py: 8 }}>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ px: { xs: 2, md: 0 } }}>
           <Grid
             container
             columnSpacing={6}
@@ -117,12 +117,12 @@ const Contact = () => {
             
             {/* Contact Form */}
             <Grid item xs={12} md={7}>
-              <Box sx={{ border: '2px dashed #e2e8f0', borderRadius: 2, p: { xs: 2, md: 4 } }}>
+              <Box className="contact-form" sx={{ border: '2px dashed #e2e8f0', borderRadius: 2, p: { xs: 2, md: 4 } }}>
                 <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#1a365d', textTransform: 'uppercase' }}>
                   SEND A MESSAGE
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-                  <Grid container spacing={3}>
+                  <Grid container spacing={{ xs: 1.5, sm: 2, md: 3 }}>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         required
@@ -131,6 +131,7 @@ const Contact = () => {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
+                        sx={{ width: '100%' }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -141,6 +142,7 @@ const Contact = () => {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
+                        sx={{ width: '100%' }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -152,6 +154,7 @@ const Contact = () => {
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
+                        sx={{ width: '100%' }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -162,6 +165,7 @@ const Contact = () => {
                         type="tel"
                         value={formData.phone}
                         onChange={handleChange}
+                        sx={{ width: '100%' }}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -171,6 +175,7 @@ const Contact = () => {
                         name="country"
                         value={formData.country}
                         onChange={handleChange}
+                        sx={{ width: '100%' }}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -180,6 +185,7 @@ const Contact = () => {
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
+                        sx={{ width: '100%' }}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -192,6 +198,7 @@ const Contact = () => {
                         rows={5}
                         value={formData.message}
                         onChange={handleChange}
+                        sx={{ width: '100%' }}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -223,7 +230,7 @@ const Contact = () => {
       
       {/* Map Section */}
       <Box sx={{ py: 8, backgroundColor: '#f5f5f5' }}>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ px: { xs: 2, md: 0 } }}>
           <Box sx={{ borderRadius: 2, overflow: 'hidden' }}>
             <iframe
               title="SB Stones Map"
