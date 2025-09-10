@@ -44,7 +44,7 @@ const Header = () => {
     <AppBar position="sticky" sx={{ backgroundColor: '#fff', color: '#03343b', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
       <Container maxWidth={false} disableGutters sx={{ maxWidth: 1350, mx: 'auto', width: '100%' }}>
         <Toolbar sx={{ minHeight: { xs: 64, md: 72 } }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: { xs: 1, md: 0 } }}>
             <Box
               component={Link}
               to="/"
